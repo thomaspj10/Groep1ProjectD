@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', views.index , name='index'),
@@ -12,6 +11,3 @@ urlpatterns = [
     path('load_db_data/', views.load_db, name='load_db_data'),
     path('filter_data/', views.filter_data, name='filter_data'),
 ]
-
-
-urlpatterns += staticfiles_urlpatterns()

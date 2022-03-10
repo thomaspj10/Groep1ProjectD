@@ -4,6 +4,10 @@ import folium
 from folium.plugins import HeatMap
 import openpyxl
 import requests
+import urllib, base64
+import matplotlib.pyplot as plt
+import io
+
 
 # Create your views here.
 
@@ -55,6 +59,10 @@ class FoliumView(TemplateView):
         figure.render()
         return {"map": figure}
 
+
+def index(request):
+    return render(request, 'dashboard/index.html', {})
+
 def load_excel(request):
     if "GET" == request.method:
         return render(request, 'dashboard/load_excel.html', {})
@@ -83,16 +91,45 @@ def load_api_data(request):
 
 
 def graphs(request):
-    return render(request, 'dashboard/graphs.html', {})
+    plt.plot(range(10))
+    fig = plt.gcf()
+    #convert graph into string buffer, convert 64 bit code into image
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    graphs_uri = urllib.parse.quote(string)
 
-def index(request):
-    return render(request, 'dashboard/index.html', {})
+    #close plt, will overlap diagram if not closed properly
+    plt.close()
+    return render(request, 'dashboard/graphs.html', {'data':graphs_uri})
+
 
 def diagrams(request):
-    return render(request, 'dashboard/diagrams.html', {})
+    labels = 'Javascript', 'Python', 'C#', 'PHP'
+    sizes = [15, 30, 45, 10]
+    explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice ('Python')
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+    shadow=True, startangle=90)
 
-def filter_data(request):
-    return render(request, 'dashboard/filter_data.html', {})
+    # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax1.axis('equal')  
+    fig = plt.gcf()
+
+    #convert graph into string buffer, convert 64 bit code into image
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    diagrams_uri = urllib.parse.quote(string)
+
+    #close plt, will overlap graph if not closed properly
+    plt.close()
+    return render(request, 'dashboard/diagrams.html', {'data':diagrams_uri})
 
 def load_db(request):
     return render(request, 'dashboard/load_db_data.html', {})
+
+def filter_data(request):
+    return render(request, 'dashboard/filter_data.html', {})
