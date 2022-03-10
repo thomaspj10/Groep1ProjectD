@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {{heatmap.header.render|safe}}
+</head>
+<body>
+  <h1><a href="/">Home</a></h1>
+  <h1><a href="../test">Test</a></h1>
+  <div><h1>Heatmap in Folium:</h1></div>
+  {{heatmap.html.render|safe}}
+  <script>
+    {{heatmap.script.render|safe}}
+  </script>
+</body>
+</html>
+
+
