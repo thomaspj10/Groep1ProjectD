@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
 </head>
 
 <body>
   <h1><a href="/">Home</a></h1>
-  <p>
-      Not implemented yet
-  </p>
+
+<table>
+    <tr>
+        <th>Artist</th>
+        <th>Album title</th>
+        <th>Logo</th>
+      
+    </tr>
+    {% for item in query_results %}
+        <tr> 
+            <td>{{ item.artist }}</td>
+            <td>{{ item.album_title }}</td>
+            <td>{{ item.album_logo }}</td>
+            
+        </tr>
+    {% endfor %}
+</table>
+
 </body>
 </html>
-
-

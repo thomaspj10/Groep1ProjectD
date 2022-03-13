@@ -7,6 +7,9 @@ import requests
 import urllib, base64
 import matplotlib.pyplot as plt
 import io
+from .models import Album, Song
+
+
 
 
 # Create your views here.
@@ -70,13 +73,11 @@ def load_excel(request):
         excel_file = request.FILES["excel_file"]
 
         # you may put validations here to check extension or file size
-
         wb = openpyxl.load_workbook(excel_file)
 
         worksheet = wb["NodeData"]
         excel_data = list()
-        # iterating over the rows and
-        # getting value from each cell in row
+        # iterating over the rows and getting value from each cell in row
         for row in worksheet.iter_rows():
             row_data = list()
             for cell in row:
@@ -87,8 +88,6 @@ def load_excel(request):
 def load_api_data(request):
     response = requests.get('https://api.covid19api.com/countries').json()
     return render(request,'dashboard/load_api_data.html',{'response':response})
-
-
 
 def graphs(request):
     plt.plot(range(10))
@@ -129,7 +128,18 @@ def diagrams(request):
     return render(request, 'dashboard/diagrams.html', {'data':diagrams_uri})
 
 def load_db(request):
-    return render(request, 'dashboard/load_db_data.html', {})
+
+    # Getting all the stuff from database
+    query_results = Album.objects.all()
+    query_results = filter(lambda album: album.artist == "Rick Astley", query_results)
+    # Creating a dictionary to pass as an argument
+    context = { 'query_results' : query_results }
+
+    # Returning the rendered html
+    
+    return render(request, 'dashboard/load_db_data.html', context)
 
 def filter_data(request):
     return render(request, 'dashboard/filter_data.html', {})
+
+
