@@ -3,7 +3,7 @@ import pandas as pd
 import leafmap.foliumap as leafmap
 
 def download_offline_map():
-        # Read and filter the data.
+    # Read and filter the data.
     data = pd.read_excel("mockdata.xlsx")
 
     # Draw the map.
