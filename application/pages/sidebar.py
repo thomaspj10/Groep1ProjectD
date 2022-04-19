@@ -14,7 +14,7 @@ def create_page():
         current_authentication_level = st.session_state["authentication_level"]
         
     # Display the page options for the user based on their authentication level.
-    choice = st.sidebar.radio("Choice your page: ", 
+    choice = st.sidebar.radio("Choose your page: ", 
         [page.name for page in available_pages if page.authentication_level <= current_authentication_level])
 
     # Render the currently active page.
