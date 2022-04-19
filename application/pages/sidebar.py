@@ -1,11 +1,13 @@
 import streamlit as st
 
 from pages.page import Page
-import pages.login
+import pages.login, pages.eventmap
+
 
 def create_page():
     available_pages = [
         Page("Login", 0, pages.login.create_page),
+        Page("Eventmap", 1, pages.eventmap.create_eventmap),
     ]
     
     # Get the authentication level of the current logged in user.
