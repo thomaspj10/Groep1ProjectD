@@ -4,7 +4,7 @@ import requests
 import sqlite3
 
 def read_data_from_excel():
-    data = pd.read_excel("mockdata.xlsx")
+    data = pd.read_excel("./prototype/mockdata.xlsx")
     st.write(data)
     
 def load_data_from_api():
@@ -14,10 +14,10 @@ def load_data_from_api():
     st.write(data)
     
 def load_data_from_database():
-    data = pd.read_excel("mockdata.xlsx")
+    data = pd.read_excel("./prototype/mockdata.xlsx")
     st.write(data)
     
-    conn = sqlite3.connect("db.sqlite")
+    conn = sqlite3.connect("./prototype/db.sqlite")
     data.to_sql("table_name", conn, if_exists="replace", index=False)
     
     new_data = pd.read_sql("SELECT * FROM table_name", conn)
