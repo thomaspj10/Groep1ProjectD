@@ -1,5 +1,4 @@
 import sqlite3
-from sqlite3 import Error
 
 # creates a connection to the sqlite database specified in the db_file
 # a database will be created if the database does not yet exists
