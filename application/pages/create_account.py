@@ -26,7 +26,8 @@ def create_page():
             "password": password,
             "email": email,
             "telephone": telephone,
-            "authentication_level": role
+            "authentication_level": role,
+            "receive_notifications": False
         }, index=[0])
         user_row.to_sql("user", conn, if_exists="append", index=False)
         
