@@ -13,8 +13,7 @@ def __connect_mqtt() -> mqtt_client:
         else:
             print("Failed to connect, return code %d\n", rc)
 
-    client = mqtt
-    client.Client("Groep1")
+    client = mqtt_client.Client("Groep1")
     client.username_pw_set(__USERNAME, __PASSWORD)
     client.on_connect = on_connect
     client.connect(__BROKER, __PORT)
