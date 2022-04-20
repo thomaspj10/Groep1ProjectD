@@ -1,4 +1,6 @@
 from paho.mqtt import client as mqtt_client
+import json
+from utils.database import insert_into_event_table
 
 BROKER = "95.217.2.100"
 PORT = 1883
@@ -20,15 +22,19 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-def subscribe(client: mqtt_client) -> None:
+def subscribe(client: mqtt_client, db_connection) -> None:
     def on_message(client, userdata, msg):
-        print(f"Received `{msg.payload.decode()}`")
+        payload_jsonstring = msg.payload.decode()
+        payload = json.loads(payload_jsonstring)
 
+        query_data = [
+            payload["nodeId"], payload["time"],
+            payload["latitude"], payload["longitude"],
+            payload["sound_type"], payload["probability"],
+            payload["sound"]
+        ]
+        
+        insert_into_event_table(db_connection, query_data)
+        
     client.subscribe(TOPIC)
     client.on_message = on_message
-
-
-def run() -> None:
-    client = connect_mqtt()
-    subscribe(client)
-    client.loop_forever()
