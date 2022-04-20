@@ -2,8 +2,9 @@ from urllib import response
 import streamlit as st
 import requests
 
-def create_page():
+def create_page(url):
     # Gets the audio file from the URL
-    audio_url = "http://95.217.2.100:8000/124489-9-0-12.wav"
-    audio = requests.get(audio_url).content
+    audio = requests.get(url).content
+
+    # Creates an audio player 
     st.audio(audio)
