@@ -6,4 +6,4 @@
 
 ### Running
 
-`streamlit run main.py`
+`streamlit run application/main.py`
