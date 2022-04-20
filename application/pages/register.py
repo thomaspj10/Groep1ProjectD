@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import utils.database as database
 from hashlib import sha256
 
 def create_page():
@@ -16,9 +17,8 @@ def create_page():
         password = sha256((st.session_state["register_password"] + "1MPlGCnOwSywPTg5BXbZ").encode("utf-8")).hexdigest()
         role = available_roles.index(st.session_state["register_role"]) + 1
         
-        # TODO - Replace this with the api from https://github.com/thomaspj10/Groep1ProjectD/pull/2
-        import sqlite3
-        conn = sqlite3.connect("./application/db.sqlite")
+        # Create a connection to the database.
+        conn = database.get_connection()
         
         # Add the new user to the database.
         user_row = pd.DataFrame({
