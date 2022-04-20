@@ -2,13 +2,13 @@ import streamlit as st
 
 from pages.page import Page
 import pages.login
-import pages.register
+import pages.create_account
 import pages.dashboard
 
 def create_page():
     available_pages = [
         Page("Login", 0, pages.login.create_page),
-        Page("Register", 2, pages.register.create_page)
+        Page("Create Account", 2, pages.create_account.create_page),
         Page("Dashboard", 1, pages.dashboard.create_page),
     ]
 
