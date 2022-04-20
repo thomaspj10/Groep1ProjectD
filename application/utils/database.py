@@ -33,7 +33,8 @@ def insert_into_event_table(connection, data):
 #   receive_notifications boolean)
 
 # create table if not exists event(
-#   node_id integer primary key autoincrement,
+#   event_id integer primary key autoincrement,
+#   node_id integer,
 #   time text,
 #   latitude float,
 #   longitude float,
