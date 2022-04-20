@@ -10,7 +10,7 @@ def create_page():
         # TODO - Login check
         
         st.session_state["logged_in"] = True
-        st.session_state["authentication_level"] = 1
+        st.session_state["authentication_level"] = 2
         
         del st.session_state["password"]
     
