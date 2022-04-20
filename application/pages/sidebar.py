@@ -1,6 +1,7 @@
 import streamlit as st
 
 from pages.page import Page
+import pages.eventmap
 import pages.login
 import pages.create_account
 import pages.dashboard
@@ -10,6 +11,7 @@ def create_page():
         Page("Login", 0, pages.login.create_page),
         Page("Create Account", 2, pages.create_account.create_page),
         Page("Dashboard", 1, pages.dashboard.create_page),
+        Page("Eventmap", 0, pages.eventmap.create_eventmap),
     ]
 
     # Get the authentication level of the current logged in user.
