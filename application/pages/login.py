@@ -18,7 +18,7 @@ def create_page():
         for index, row in users.iterrows():
             if row["email"] == email and row["password"] == password:
                 st.session_state["logged_in"] = True
-                st.session_state["authentication_level"] = 1
+                st.session_state["authentication_level"] = row["authentication_level"]
                 
                 st.success("Successfully logged in!")
                 
