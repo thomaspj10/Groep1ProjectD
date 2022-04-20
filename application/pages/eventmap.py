@@ -14,16 +14,17 @@ def create_eventmap():
         option_sound_type = st.selectbox("Select sound type", ["All", "Car", "Gun", "Animal"])
 
         # Create the slider to pick a value for probability (between 0 and 100 with steps of 1)
-        probability_slider = st.slider(label = 'Probability?', value = 50, min_value = 0, max_value = 100, step = 1)
+        probability_slider = st.slider(label = 'Probability', value = 50, min_value = 0, max_value = 100, step = 1)
 
         # Create the date
         start = st.date_input('Start', value = datetime.today().date())
-        end = st.date_input('End', value = pd.to_datetime('2024-01-01'))
+
+        # add a year to start date
+        end = st.date_input('End', value = pd.to_datetime(start + pd.Timedelta(days=365)))
 
         # convert date to unix timestamp
         start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
-
 
     # Draw the map
     m = leafmap.Map(
