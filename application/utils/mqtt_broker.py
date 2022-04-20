@@ -26,15 +26,19 @@ def subscribe(client: mqtt_client, db_connection) -> None:
     def on_message(client, userdata, msg):
         payload_jsonstring = msg.payload.decode()
         payload = json.loads(payload_jsonstring)
-
-        query_data = [
-            payload["nodeId"], payload["time"],
-            payload["latitude"], payload["longitude"],
-            payload["sound_type"], payload["probability"],
-            payload["sound"]
-        ]
         
-        insert_into_event_table(db_connection, query_data)
+        try: 
+            query_data = [
+                payload["nodeId"], payload["time"],
+                payload["latitude"], payload["longitude"],
+                payload["sound_type"], payload["probability"],
+                payload["sound"]
+            ]
+            
+            insert_into_event_table(db_connection, query_data)
+            
+        except Exception as err:
+            print('Handling run-time error:', err)
         
     client.subscribe(TOPIC)
     client.on_message = on_message

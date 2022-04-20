@@ -14,7 +14,7 @@ def get_connection():
 
 def insert_into_event_table(connection, data):
     if data.length != 7:
-        raise TypeError(f"Query data collection needs to be of length 7, currenlty: {data.length}")
+        raise TypeError(f"Query data collection has to be of length 7, currenlty: {data.length}")
         
     try:
         query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
