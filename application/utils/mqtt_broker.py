@@ -1,6 +1,9 @@
 from paho.mqtt import client as mqtt_client
 import json
-from utils.database import insert_into_event_table
+import pandas as pd
+import utils.notifications as notify
+from utils.database import insert_into_event_table, select_user_by_receive_notifications
+from uuid import uuid4
 
 BROKER = "95.217.2.100"
 PORT = 1883
@@ -15,7 +18,7 @@ def connect_mqtt() -> mqtt_client:
         else:
             print("Failed to connect, return code %d\n", rc)
 
-    client = mqtt_client.Client("Groep1")
+    client = mqtt_client.Client(str(uuid4()))
     client.username_pw_set(USERNAME, PASSWORD)
     client.on_connect = on_connect
     client.connect(BROKER, PORT)
@@ -35,7 +38,15 @@ def subscribe(client: mqtt_client, db_connection) -> None:
                 payload["sound"]
             ]
             
-            insert_into_event_table(db_connection, query_data)
+            succes = insert_into_event_table(db_connection, query_data) == 0
+            if succes:
+                print("Succeeded to insert data into database.")
+                users = pd.read_sql("SELECT * FROM user WHERE NOT receive_notifications", db_connection)
+                for index, user in users.iterrows():
+                    print(user["telephone"])
+                    notify.send_notification(user["telephone"])
+            else:
+                print("Failed to insert data into database.")
             
         except Exception as err:
             print('Handling run-time error:', err)
