@@ -20,6 +20,6 @@ pages = {
     "Offline download": offline.download_offline_map
 }
 
-choice = st.sidebar.radio("Choice your page: ", tuple(pages.keys()))
+choice = st.sidebar.radio("Choose your page: ", tuple(pages.keys()))
 
 pages[choice]()
