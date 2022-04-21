@@ -21,6 +21,11 @@ def create_page():
     if "authentication_level" in st.session_state:
         current_authentication_level = st.session_state["authentication_level"]
 
+        # make logout button in sidebar
+        st.sidebar.button("Logout")
+        available_pages.remove(available_pages[0])
+        #available_pages.remove(Page("Login", 0, pages.login.create_page))
+
     # Display the page options for the user based on their authentication level.
     choice = st.sidebar.radio("Choose your page: ",
         [page.name for page in available_pages if page.authentication_level <= current_authentication_level])
@@ -30,3 +35,10 @@ def create_page():
         if page.name == choice:
             page.create_page()
             break
+
+    
+    # if account is logged in have a logout button
+    #if "authentication_level" in st.session_state:
+        
+    #if pages.login.is_logged_in():
+        #available_pages.append(Page("Logout", 0, pages.login.logout))
