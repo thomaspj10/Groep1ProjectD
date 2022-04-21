@@ -17,5 +17,3 @@ def send_notification(phone_number, pdf=""):
                                 body=text,      
                                 to=phone_number,
                             )
-
-send_notification('+31614436948')
