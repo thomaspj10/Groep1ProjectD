@@ -4,8 +4,7 @@ import sqlite3
 # a database will be created if it does not yet exists
 # get a connection by importing this file and calling the get_connection function
 def get_connection():
-    return sqlite3.connect("./db.sqlite") 
-
+    return sqlite3.connect("../db.sqlite")
 def insert_into_event_table(connection, data) -> int:
     """
     Insert data which hold the data of a node event
