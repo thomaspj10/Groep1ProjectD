@@ -14,7 +14,7 @@ def insert_into_event_table(connection, data) -> int:
     :return 0 or -1:
     """
     if len(data) != 7:
-        raise TypeError(f"Query data collection has to be of length 7, currenlty: {len(data)}")
+        raise TypeError(f"Query data collection has to be of length 7, currently: {len(data)}")
         
     try:
         query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
