@@ -2,7 +2,7 @@ from paho.mqtt import client as mqtt_client
 import json
 import pandas as pd
 import utils.notifications as notify
-from utils.database import insert_into_event_table, select_user_by_receive_notifications
+from utils.database import insert_into_event_table
 from uuid import uuid4
 
 BROKER = "95.217.2.100"
@@ -41,7 +41,7 @@ def subscribe(client: mqtt_client, db_connection) -> None:
             succes = insert_into_event_table(db_connection, query_data) == 0
             if succes:
                 print("Succeeded to insert data into database.")
-                users = pd.read_sql("SELECT * FROM user WHERE NOT receive_notifications", db_connection)
+                users = pd.read_sql("SELECT * FROM user WHERE receive_notifications", db_connection)
                 for index, user in users.iterrows():
                     notify.send_notification(user["telephone"])
             else:
