@@ -10,6 +10,8 @@ def create_page():
         if user["email"] != st.session_state["email"]:
             continue
         
+        st.write("Welcome " + user["username"] + ",")
+        
         receive_notifications = st.checkbox(label = "Do you want to receive notifications?", value=user["receive_notifications"])
         
         users.at[index, "receive_notifications"] = receive_notifications
