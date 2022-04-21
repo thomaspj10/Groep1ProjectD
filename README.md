@@ -4,6 +4,16 @@
 
 `pip install -r requirements.txt`
 
-### Running
+### Running Frontend
 
-`streamlit run application/main.py`
+```
+cd application
+streamlit run main.py
+```
+
+### Running Backend
+
+```
+cd application
+python backend.py
+```
