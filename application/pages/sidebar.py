@@ -22,7 +22,13 @@ def create_page():
         current_authentication_level = st.session_state["authentication_level"]
 
         # make logout button in sidebar
-        st.sidebar.button("Logout")
+        def logout_click():
+            del st.session_state["logged_in"]
+            del st.session_state["email"]
+            del st.session_state["authentication_level"]
+        
+        st.sidebar.button("Logout", on_click=logout_click)
+        
         available_pages.remove(available_pages[0])
         #available_pages.remove(Page("Login", 0, pages.login.create_page))
 
