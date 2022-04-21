@@ -5,6 +5,7 @@ import pages.eventmap
 import pages.login
 import pages.create_account
 import pages.dashboard
+import pages.recent_events
 
 def create_page():
     available_pages = [
@@ -12,6 +13,7 @@ def create_page():
         Page("Create Account", 2, pages.create_account.create_page),
         Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Eventmap", 1, pages.eventmap.create_eventmap),
+        Page("Recent Events", 1, pages.recent_events.create_page)
     ]
 
     # Get the authentication level of the current logged in user.
