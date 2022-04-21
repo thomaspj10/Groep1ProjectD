@@ -12,9 +12,9 @@ def create_page():
         
         st.write("Welcome " + user["username"] + ",")
         
-        receive_notifications = st.checkbox(label = "Do you want to receive notifications?", value=user["receive_notifications"])
+        receive_notifications = st.checkbox(label = "Do you want to receive notifications?", value=not user["receive_notifications"])
         
-        users.at[index, "receive_notifications"] = receive_notifications
+        users.at[index, "receive_notifications"] = int(receive_notifications)
         users.to_sql("user", conn, if_exists="replace", index=False)
         
         return
