@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import leafmap.foliumap as leafmap
 from datetime import datetime
+import utils.database as database
 
 def create_eventmap():
 
@@ -38,7 +39,12 @@ def create_eventmap():
     m.add_basemap("Stamen.Terrain")
 
     # Get the data from excel sheet (update to DB later)
-    df = pd.read_excel("./prototype/eventmapdata.xlsx")
+    #df = pd.read_excel("./prototype/eventmapdata.xlsx")
+
+    # Create a database connection.
+    conn = database.get_connection()
+
+    df = pd.read_sql("SELECT * FROM event", conn)
 
     # Sound type filter
     if option_sound_type != "All":
