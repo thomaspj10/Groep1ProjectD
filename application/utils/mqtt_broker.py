@@ -43,7 +43,6 @@ def subscribe(client: mqtt_client, db_connection) -> None:
                 print("Succeeded to insert data into database.")
                 users = pd.read_sql("SELECT * FROM user WHERE NOT receive_notifications", db_connection)
                 for index, user in users.iterrows():
-                    print(user["telephone"])
                     notify.send_notification(user["telephone"])
             else:
                 print("Failed to insert data into database.")
