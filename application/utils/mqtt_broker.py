@@ -41,12 +41,12 @@ def subscribe(client: mqtt_client, db_connection) -> None:
             succes = insert_into_event_table(db_connection, query_data) == 0
             if succes:
                 print("Succeeded to insert data into database.")
-                # users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_connection)
-                # for index, user in users.iterrows():
-                #     try:
-                #         notify.send_notification(user["telephone"])
-                #     except Exception as err:
-                #         print('Handling run-time error:', err)
+                users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_connection)
+                for index, user in users.iterrows():
+                    try:
+                        notify.send_notification(user["telephone"])
+                    except Exception as err:
+                        print('Handling run-time error:', err)
             else:
                 print("Failed to insert data into database.")
             
