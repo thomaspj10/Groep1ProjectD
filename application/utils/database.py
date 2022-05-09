@@ -4,10 +4,10 @@ import sqlite3
 # a database will be created if it does not yet exists
 # get a connection by importing this file and calling the get_connection function
 def get_connection():
-    return sqlite3.connect("./db.sqlite")
+    return sqlite3.connect("../db.sqlite")
 
 def insert_into_event_table(connection, data):
-    if data.length != 7:
+    if len(data) != 7:
         raise TypeError(f"Query data collection has to be of length 7, currenlty: {data.length}")
         
     try:

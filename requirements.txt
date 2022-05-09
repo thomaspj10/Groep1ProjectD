@@ -1,3 +1,5 @@
 streamlit
 leafmap
 paho-mqtt
+selenium
+fpdf
