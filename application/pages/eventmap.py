@@ -5,6 +5,8 @@ from datetime import datetime
 import utils.database as database
 
 def create_eventmap():
+    from streamlit_autorefresh import st_autorefresh
+    st_autorefresh(interval=0.5 * 60 * 1000, key="dataframerefresh")
 
     st.header("Eventmap")
 
