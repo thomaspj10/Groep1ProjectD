@@ -54,7 +54,7 @@ def select_user_by_receive_notifications(connection, receive_notifications: bool
 # create table if not exists event(
 #   event_id integer primary key autoincrement,
 #   node_id integer,
-#   time text,
+#   time intger,
 #   latitude float,
 #   longitude float,
 #   sound_type,
