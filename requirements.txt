@@ -3,3 +3,4 @@ leafmap
 paho-mqtt
 twilio
 pandas
+streamlit_autorefresh

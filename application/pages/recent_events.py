@@ -4,6 +4,9 @@ import pandas as pd
 import datetime
 
 def create_page():
+    from streamlit_autorefresh import st_autorefresh
+    st_autorefresh(interval=0.5 * 60 * 1000, key="dataframerefresh")
+    
     connection = database.get_connection()
     
     # Reads the events and orders by time (most recent first)
