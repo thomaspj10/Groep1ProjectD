@@ -1,6 +1,8 @@
 streamlit
 leafmap
 paho-mqtt
+selenium
+fpdf
 twilio
 pandas
 streamlit_autorefresh
