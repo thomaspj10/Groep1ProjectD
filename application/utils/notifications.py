@@ -1,6 +1,6 @@
 from twilio.rest import Client
 
-def send_notification(phone_number, pdf=""):
+def send_notification(phone_number, message, pdf=""):
     
     # Api Tokens
     account_sid = 'ACf1a8a3ce82a894972f2ec247038279d6' 
@@ -9,7 +9,7 @@ def send_notification(phone_number, pdf=""):
     # Creates a client that will send the message
     client = Client(account_sid, auth_token) 
     
-    text = 'Test'
+    text = message
 
     # Sends the message 
     message = client.messages.create(   
@@ -17,5 +17,5 @@ def send_notification(phone_number, pdf=""):
                                 body=text,      
                                 to=phone_number,
                             )
-
-send_notification('+31614436948')
+    
+    print("Text message has been send to: %s" % phone_number)
