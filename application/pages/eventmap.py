@@ -3,6 +3,7 @@ import pandas as pd
 import leafmap.foliumap as leafmap
 from datetime import datetime
 import utils.database as database
+import json
 
 def create_eventmap():
 
@@ -27,13 +28,19 @@ def create_eventmap():
         start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
 
+    # Loads the longitude and latitude for positioning of the event map from the json settings file
+    with open("../application_settings.json") as settings_file:
+        settings = json.load(settings_file)
+        latitude = settings["map"]["latitude"]
+        longitude = settings["map"]["longitude"]
+
     # Draw the map
     m = leafmap.Map(
         draw_control=False,
         measure_control=False,
         fullscreen_control=False,
         attribution_control=True,
-        location=[-2, 23],
+        location=[latitude, longitude],
         zoom_start=6)
 
     m.add_basemap("Stamen.Terrain")
