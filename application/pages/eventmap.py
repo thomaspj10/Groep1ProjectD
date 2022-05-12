@@ -7,6 +7,8 @@ import json
 from utils.settings import read_settings
 
 def create_eventmap():
+    from streamlit_autorefresh import st_autorefresh
+    st_autorefresh(interval=0.5 * 60 * 1000, key="dataframerefresh")
 
     st.header("Eventmap")
 
