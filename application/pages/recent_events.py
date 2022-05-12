@@ -9,7 +9,7 @@ def create_page():
 
     # Reads the settings 
     settings = read_settings()
-    seconds = settings["refresh_rate"]
+    seconds = settings["pages"]["refresh_rate_in_seconds"]
     
     st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
     

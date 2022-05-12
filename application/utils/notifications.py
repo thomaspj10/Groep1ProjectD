@@ -7,9 +7,9 @@ def send_notification(phone_number, message, pdf=""):
     settings = read_settings()
 
     # Api Tokens from the settings
-    account_sid = settings["sms_credentials"]["account_sid"]
-    auth_token = settings["sms_credentials"]["auth_token"] 
-    messaging_service = settings["sms_credentials"]["messaging_service_sid"]
+    account_sid = settings["twilio_sms_service"]["account_sid"]
+    auth_token = settings["twilio_sms_service"]["auth_token"] 
+    messaging_service = settings["twilio_sms_service"]["messaging_service_sid"]
 
     # Creates a client that will send the message
     client = Client(account_sid, auth_token) 

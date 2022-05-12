@@ -11,7 +11,7 @@ def create_eventmap():
 
     # Reads the settings 
     settings = read_settings()
-    seconds = settings["refresh_rate"]
+    seconds = settings["pages"]["refresh_rate_in_seconds"]
 
     st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
 
@@ -37,8 +37,8 @@ def create_eventmap():
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
 
     # Loads the longitude and latitude for positioning of the event map from the settings 
-    latitude = settings["map"]["latitude"]
-    longitude = settings["map"]["longitude"]
+    latitude = settings["eventmap"]["start_latitude"]
+    longitude = settings["eventmap"]["start_longitude"]
 
     # Draw the map
     m = leafmap.Map(
