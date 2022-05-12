@@ -8,7 +8,12 @@ from utils.settings import read_settings
 
 def create_eventmap():
     from streamlit_autorefresh import st_autorefresh
-    st_autorefresh(interval=0.5 * 60 * 1000, key="dataframerefresh")
+
+    # Reads the settings 
+    settings = read_settings()
+    seconds = settings["refresh_rate"]
+
+    st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
 
     st.header("Eventmap")
 
@@ -31,8 +36,7 @@ def create_eventmap():
         start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
 
-    # Loads the longitude and latitude for positioning of the event map from the json settings file
-    settings = read_settings()
+    # Loads the longitude and latitude for positioning of the event map from the settings 
     latitude = settings["map"]["latitude"]
     longitude = settings["map"]["longitude"]
 

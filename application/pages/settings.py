@@ -17,15 +17,18 @@ def create_page():
         st.markdown("---")
         
         # Refresh rate setting
-        st.write("The refresh rate for refreshing the pages automatically")
-        settings["refresh_rate"] = st.number_input("Refresh rate in ms", value=settings["refresh_rate"])
+        st.write("The refresh rate for refreshing the eventmap and recent events pages to show the updated data")
+        settings["refresh_rate"] = st.number_input("Refresh rate in seconds", value=settings["refresh_rate"])
 
         # Creates a line
         st.markdown("---")
 
-        # SMS credentials setting
+        # SMS credentials settings
         st.write("The credentials used for the SMS system")
-        settings["sms_credentials"] = st.text_input("SMS credentials", value=settings["sms_credentials"])
+        settings["sms_credentials"]["account_sid"] = st.text_input("Account SID", value=settings["sms_credentials"]["account_sid"])
+        settings["sms_credentials"]["auth_token"] = st.text_input("Authentication token", value=settings["sms_credentials"]["auth_token"])
+        settings["sms_credentials"]["messaging_service_sid"] = st.text_input("Messaging service SID", value=settings["sms_credentials"]["messaging_service_sid"])
+
 
         # Button to save settings
         submitted = st.form_submit_button("Save")
