@@ -4,6 +4,7 @@ import leafmap.foliumap as leafmap
 from datetime import datetime
 import utils.database as database
 import json
+from utils.settings import read_settings
 
 def create_eventmap():
 
@@ -29,10 +30,9 @@ def create_eventmap():
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
 
     # Loads the longitude and latitude for positioning of the event map from the json settings file
-    with open("../application_settings.json") as settings_file:
-        settings = json.load(settings_file)
-        latitude = settings["map"]["latitude"]
-        longitude = settings["map"]["longitude"]
+    settings = read_settings()
+    latitude = settings["map"]["latitude"]
+    longitude = settings["map"]["longitude"]
 
     # Draw the map
     m = leafmap.Map(
