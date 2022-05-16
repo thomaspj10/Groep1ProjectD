@@ -10,5 +10,5 @@ st.set_page_config(
 if "event" in st.experimental_get_query_params():
     pages.download_event.create_page()
 else:
-    import pages.sidebar
-    pages.sidebar.create_page()
+    import components.sidebar
+    components.sidebar.create_page()

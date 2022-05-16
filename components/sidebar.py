@@ -1,11 +1,6 @@
 import streamlit as st
 
-from pages.page import Page
-import pages.eventmap
-import pages.login
-import pages.create_account
-import pages.dashboard
-import pages.recent_events
+from pages import *
 
 def create_page():
     available_pages = [
