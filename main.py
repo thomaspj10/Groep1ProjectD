@@ -4,7 +4,8 @@ import pages.download_event
 st.set_page_config(
     page_title="Chengeta Dashboard",
     page_icon=":deer:",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    layout="wide"
 )
 
 if "event" in st.experimental_get_query_params():
