@@ -4,25 +4,25 @@ from hashlib import sha256
 connection = get_connection()
 cursor = connection.cursor()
 
-cursor.execute("""create table if not exists user( 
-    id integer primary key autoincrement,
-    username text not null,
-    password text not null,
-    email text,
-    telephone text,
-    authentication_level integer,
-    receive_notifications boolean
+cursor.execute("""CREATE TABLE IF NOT EXISTS user( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    email TEXT,
+    telephone TEXT,
+    authentication_level INTEGER,
+    receive_notifications INTEGER
 )""")
 
-cursor.execute("""create table if not exists event(
-    event_id integer primary key autoincrement,
-    node_id integer,
-    time integer,
-    latitude float,
-    longitude float,
-    sound_type text,
-    probability integer,
-    sound text
+cursor.execute("""CREATE TABLE IF NOT EXISTS event(
+    event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER,
+    time INTEGER,
+    latitude FLOAT,
+    longitude FLOAT,
+    sound_type TEXT,
+    probability INTEGER,
+    sound TEXT
 )""")
 
 password = sha256(("admin1MPlGCnOwSywPTg5BXbZ").encode("utf-8")).hexdigest()
