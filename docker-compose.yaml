@@ -1,11 +1,10 @@
 version: '1.0'
 services:
   app:
-    image: ./
-    container_name: streamlit_app
+    build: ./
+    container_name: chenqueta_app
     volumes:
       - .:/usr/src/app
     ports: 
       - 28501:8501
-      - 20080:80
   

@@ -1,5 +1,11 @@
 # Groep1ProjectD
 
+### Docker 
+
+```
+docker compose up -d
+```
+
 ### installation
 
 ```
