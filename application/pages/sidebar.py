@@ -20,13 +20,12 @@ def create_page():
     # Get the authentication level of the current logged in user.
     current_authentication_level = 0
     if "authentication_level" in cookies.get_cookies():
-        current_authentication_level = cookies.get_cookies()["authentication_level"]
+        current_authentication_level = int(cookies.get_cookies()["authentication_level"])
 
         # make logout button in sidebar
         def logout_click():
-            del st.session_state["logged_in"]
-            del st.session_state["email"]
-            del st.session_state["authentication_level"]
+            # TODO: BROKEN NEED TO FIX THIS
+            del cookies.get_cookies()["logged_in"]
         
         st.sidebar.button("Logout", on_click=logout_click)
         
