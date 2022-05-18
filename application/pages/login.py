@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import utils.database as database
+import utils.cookies as cookies
 from hashlib import sha256
 
 def create_page():
@@ -17,9 +18,10 @@ def create_page():
         users = pd.read_sql("SELECT * FROM user", conn)
         for _, row in users.iterrows():
             if row["email"] == email and row["password"] == password:
-                st.session_state["logged_in"] = True
-                st.session_state["email"] = email
-                st.session_state["authentication_level"] = row["authentication_level"]
+                cookies.get_cookies()["logged_in"] = True
+                cookies.get_cookies()["email"] = email
+                cookies.get_cookies()["authentication_level"] = row["authentication_level"]
+                cookies.get_cookies().save()
                 
                 st.success("Successfully logged in!")
                 

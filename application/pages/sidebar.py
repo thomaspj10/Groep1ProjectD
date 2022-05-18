@@ -1,6 +1,7 @@
 import streamlit as st
 
 from pages.page import Page
+import utils.cookies as cookies
 import pages.eventmap
 import pages.login
 import pages.create_account
@@ -20,8 +21,8 @@ def create_page():
 
     # Get the authentication level of the current logged in user.
     current_authentication_level = 0
-    if "authentication_level" in st.session_state:
-        current_authentication_level = st.session_state["authentication_level"]
+    if "authentication_level" in cookies.get_cookies():
+        current_authentication_level = cookies.get_cookies()["authentication_level"]
 
         # make logout button in sidebar
         def logout_click():
