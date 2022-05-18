@@ -46,7 +46,7 @@ def create_page():
     # conda install -c conda-forge geckodriver
     img_data = m._to_png(2)
     img = Image.open(io.BytesIO(img_data))
-    img.save("./images/temp_map_img.png", format="PNG")
+    img.save("./media/images/temp_map_img.png", format="PNG")
     
     # Get some general information.
     event = df.head(1)
@@ -64,16 +64,22 @@ def create_page():
     pdf.rotate(270)
     
     img = Image.new('RGB', (297,297), "#242424" )
-    img.save('./images/text_box_background.png')
+    img.save('./media/images/text_box_background.png')
 
-    pdf.image('./images/text_box_background.png', x = 35, y = -185, w = 140, h = 40, type = '', link = '')
-    pdf.image('./images/alten_logo.png', x = 12.5, y = -180, w = 15, h = 15*1.68, type = '', link = '')
-    pdf.image('./images/chengeta_wildlife_logo.jpg', x = 12.5, y = -150, w = 15, h = 15, type = '', link = '')
-    
-    pdf.set_font('Arial', 'B', 20)
+    pdf.image('./media/images/text_box_background.png', x = 35, y = -185, w = 140, h = 40, type = '', link = '')
+    pdf.image('./media/images/alten_logo.png', x = 12.5, y = -180, w = 15, h = 15*1.68, type = '', link = '')
+    pdf.image('./media/images/chengeta_wildlife_logo.jpg', x = 12.5, y = -150, w = 15, h = 15, type = '', link = '')
+   
+    pdf.add_font("Montserrat", "", r"./media/fonts/Montserrat-Regular.ttf", uni=True)
+    pdf.add_font("Montserrat", "B", r"./media/fonts/Montserrat-Bold.ttf", uni=True)
+    pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
+    pdf.add_font("Montserrat", "I", r"./media/fonts/Montserrat-Italic.ttf", uni=True)
+   
+    pdf.set_font('Montserrat', 'B', 20)
     pdf.set_text_color(160, 68, 44)
     pdf.text(x=40, y=-175, txt=f"Information about Event #{event_id}")
-    pdf.set_font('Arial', "", 12)
+   
+    pdf.set_font('Montserrat', "", 12)
     pdf.set_text_color(255, 255, 255)
     pdf.text(x=40, y=-165, txt=f"Node ID: {node_id}")
     pdf.text(x=40, y=-160, txt=f"Time: {time}")
@@ -86,7 +92,7 @@ def create_page():
     img_width = 297
     img_height_width_ratio = 2.0237037037
     img_height = img_width / img_height_width_ratio
-    pdf.image("./images/temp_map_img.png", x=0, y=-127, w=img_width, h=img_height)
+    pdf.image("./media/images/temp_map_img.png", x=0, y=-127, w=img_width, h=img_height)
     
     
     pdf_bytes = pdf.output(dest='S').encode('latin-1')
