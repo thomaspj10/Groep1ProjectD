@@ -2,7 +2,10 @@
 
 ### installation
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+conda install -c conda-forge geckodriver
+```
 
 ### Running Frontend
 

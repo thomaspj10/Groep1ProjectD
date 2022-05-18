@@ -1,6 +1,17 @@
 import streamlit as st
 
+<<<<<<< HEAD:components/sidebar.py
 from pages import *
+=======
+from pages.page import Page
+import utils.cookies as cookies
+import pages.eventmap
+import pages.login
+import pages.create_account
+import pages.dashboard
+import pages.recent_events
+import pages.settings_page
+>>>>>>> main:application/pages/sidebar.py
 
 def create_page():
     available_pages = [
@@ -8,13 +19,14 @@ def create_page():
         Page("Create Account", 2, pages.create_account.create_page),
         Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Eventmap", 1, pages.eventmap.create_eventmap),
-        Page("Recent Events", 1, pages.recent_events.create_page)
+        Page("Recent Events", 1, pages.recent_events.create_page),
+        Page("Settings", 2, pages.settings_page.create_page)
     ]
 
     # Get the authentication level of the current logged in user.
     current_authentication_level = 0
-    if "authentication_level" in st.session_state:
-        current_authentication_level = st.session_state["authentication_level"]
+    if "authentication_level" in cookies.get_cookies():
+        current_authentication_level = cookies.get_cookies()["authentication_level"]
 
         # make logout button in sidebar
         def logout_click():
