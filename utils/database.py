@@ -4,7 +4,7 @@ import sqlite3
 # a database will be created if it does not yet exists
 # get a connection by importing this file and calling the get_connection function
 def get_connection():
-    return sqlite3.connect("../db.sqlite")
+    return sqlite3.connect("./db.sqlite")
 def insert_into_event_table(connection, data) -> int:
     """
     Insert data which hold the data of a node event
@@ -33,30 +33,9 @@ def select_user_by_receive_notifications(connection, receive_notifications: bool
     :param receive_notifications:
     :return a list of users:
     """
-    
+
     cursor = connection.cursor()
     
     # If receive_notifications true add NOT to to query, else nothing
     cursor.execute(f"SELECT * FROM user WHERE {'NOT ' if receive_notifications == True else ''}receive_notifications")
     return cursor.fetchall()
-
-# Database consists of the following tables:
-
-# create table if not exists user(              
-#   id integer primary key autoincrement,
-#   username text not null,
-#   password text not null,
-#   email text,
-#   telephone text,
-#   authentication_level integer,
-#   receive_notifications boolean)
-
-# create table if not exists event(
-#   event_id integer primary key autoincrement,
-#   node_id integer,
-#   time intger,
-#   latitude float,
-#   longitude float,
-#   sound_type,
-#   probability integer,
-#   sound text)
