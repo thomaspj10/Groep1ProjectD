@@ -1,5 +1,8 @@
 import streamlit as st
 
+<<<<<<< HEAD:components/sidebar.py
+from pages import *
+=======
 from pages.page import Page
 import utils.cookies as cookies
 import pages.eventmap
@@ -8,6 +11,7 @@ import pages.create_account
 import pages.dashboard
 import pages.recent_events
 import pages.settings_page
+>>>>>>> main:application/pages/sidebar.py
 
 def create_page():
     available_pages = [
