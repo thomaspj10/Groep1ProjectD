@@ -1,16 +1,15 @@
 import streamlit as st
-from streamlit_cookies_manager import EncryptedCookieManager
+from streamlit_cookies_manager import CookieManager
     
 __cookies = None
 
 def initialize_cookes():
     global __cookies
-    __cookies = EncryptedCookieManager(
+    __cookies = CookieManager(
         prefix="prefix",
-        password="password",
     )
     if not __cookies.ready():
         st.stop()
     
-def get_cookies() -> EncryptedCookieManager:
+def get_cookies() -> CookieManager:
     return __cookies

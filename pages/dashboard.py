@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import utils.database as database 
+import utils.cookies as cookies
 
 def create_page():
     conn = database.get_connection()
     users = pd.read_sql("SELECT * FROM user", conn)
-    filtered_users = users[users["email"] == st.session_state["email"]]
+    filtered_users = users[users["email"] == cookies.get_cookies()["email"]]
     
     user = filtered_users.iloc[0]
         
