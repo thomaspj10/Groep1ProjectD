@@ -64,34 +64,47 @@ def create_page():
     pdf = FPDF()
     pdf.add_page()
     pdf.rotate(270)
-    
-    pdf.image('./media/images/text_box_background.png', x = 35, y = -185, w = 140, h = 40, type = '', link = '')
-    pdf.image('./media/images/alten_logo.png', x = 12.5, y = -180, w = 15, h = 15*1.68, type = '', link = '')
-    pdf.image('./media/images/chengeta_wildlife_logo.jpg', x = 12.5, y = -150, w = 15, h = 15, type = '', link = '')
    
     pdf.add_font("Montserrat", "", r"./media/fonts/Montserrat-Regular.ttf", uni=True)
     pdf.add_font("Montserrat", "B", r"./media/fonts/Montserrat-Bold.ttf", uni=True)
     pdf.add_font("Montserrat", "I", r"./media/fonts/Montserrat-Italic.ttf", uni=True)
     pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
    
+   
+    pdf_width = 297
+    tb_x = 35
+    tb_w = pdf_width - tb_x * 2
+    pdf.image('./media/images/text_box_background.png', x=35, y=-177.5, w=tb_w, h=40, type='', link='')
+    
+    pdf.image('./media/images/alten_logo.png', x=12.5, y=-180, w=15, h=15*1.68, type='', link='')
+    pdf.image('./media/images/chengeta_wildlife_logo.jpg', x=12.5, y=-150, w=15, h=15, type='', link='')
+
+    col_1_x = 42.5
+    col_1_y = -155
     pdf.set_font('Montserrat', 'B', 20)
     pdf.set_text_color(160, 68, 44)
-    pdf.text(x=40, y=-175, txt=f"Information about Event #{event_id}")
+    pdf.text(col_1_x, y=col_1_y-10, txt=f"Information about Event #{event_id}")
    
     pdf.set_font('Montserrat', "", 12)
     pdf.set_text_color(255, 255, 255)
-    pdf.text(x=40, y=-165, txt=f"Node ID: {node_id}")
-    pdf.text(x=40, y=-160, txt=f"Time: {time}")
-    pdf.text(x=40, y=-155, txt=f"Type: {sound_type}")
-    pdf.text(x=40, y=-150, txt=f"Probability: {probability}%")
+    
+    pdf.text(col_1_x, y=col_1_y, txt=f"Node ID: {node_id}")
+    pdf.text(col_1_x, y=col_1_y+5, txt=f"Type: {sound_type}")
+    pdf.text(col_1_x, y=col_1_y+10, txt=f"Probability: {probability}%")
 
-    pdf.text(x=100, y=-165, txt=f"Latitude: {latitude}")
-    pdf.text(x=100, y=-160, txt=f"Longitude: {longitude}")
+    col_2_x = 100
+    col_2_y = -155.5
+    pdf.text(x=col_2_x, y=col_2_y, txt=f"Time: {time}")
+    pdf.text(x=col_2_x, y=col_2_y+5, txt=f"Latitude: {latitude}")
+    pdf.text(x=col_2_x, y=col_2_y+10, txt=f"Longitude: {longitude}")
     
     img_width = 297
     img_height_width_ratio = 2.0237037037
+    img_height = img_width / img_height_width_ratio + 5
+    pdf.image('./media/images/text_box_background.png', x=0, y=-127, w=img_width, h=img_height, type = '', link = '')
+    img_width -= 20
     img_height = img_width / img_height_width_ratio
-    pdf.image("./media/images/temp_map_img.png", x=0, y=-127, w=img_width, h=img_height)
+    pdf.image("./media/images/temp_map_img.png", x=0+10, y=-127+5, w=img_width, h=img_height)
     
     
     pdf_bytes = pdf.output(dest='S').encode('latin-1')
