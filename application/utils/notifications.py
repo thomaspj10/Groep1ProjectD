@@ -1,19 +1,24 @@
 from twilio.rest import Client
+from utils.settings import read_settings
 
-def send_notification(phone_number, pdf=""):
+def send_notification(phone_number, message, pdf=""):
     
-    # Api Tokens
-    account_sid = 'AC30f1f813921dd06d762d928485ee4528' 
-    auth_token = '9b556121018e0e825d378400e775759e' 
+    # Reads the settings
+    settings = read_settings()
+
+    # Api Tokens from the settings
+    account_sid = settings["twilio_sms_service"]["account_sid"]
+    auth_token = settings["twilio_sms_service"]["auth_token"] 
+    messaging_service = settings["twilio_sms_service"]["messaging_service_sid"]
 
     # Creates a client that will send the message
     client = Client(account_sid, auth_token) 
     
-    text = 'Test'
+    text = message
 
     # Sends the message 
     message = client.messages.create(   
-                                messaging_service_sid='MGf0c5a4ab7ddc5a2018fa730f6d7cb029',
+                                messaging_service_sid=messaging_service,
                                 body=text,      
                                 to=phone_number,
                             )
