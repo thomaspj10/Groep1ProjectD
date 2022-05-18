@@ -29,7 +29,9 @@ def create_page():
             draw_control=False,
             measure_control=False,
             fullscreen_control=False,
-            attribution_control=True,
+            attribution_control=False,
+            zoom_control=False,
+            search_control=False,
             location=[df.at[0, "latitude"], df.at[0, "longitude"]],
             zoom_start=10)
     m.add_basemap("Stamen.Terrain")
@@ -63,17 +65,14 @@ def create_page():
     pdf.add_page()
     pdf.rotate(270)
     
-    img = Image.new('RGB', (297,297), "#242424" )
-    img.save('./media/images/text_box_background.png')
-
     pdf.image('./media/images/text_box_background.png', x = 35, y = -185, w = 140, h = 40, type = '', link = '')
     pdf.image('./media/images/alten_logo.png', x = 12.5, y = -180, w = 15, h = 15*1.68, type = '', link = '')
     pdf.image('./media/images/chengeta_wildlife_logo.jpg', x = 12.5, y = -150, w = 15, h = 15, type = '', link = '')
    
     pdf.add_font("Montserrat", "", r"./media/fonts/Montserrat-Regular.ttf", uni=True)
     pdf.add_font("Montserrat", "B", r"./media/fonts/Montserrat-Bold.ttf", uni=True)
-    pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
     pdf.add_font("Montserrat", "I", r"./media/fonts/Montserrat-Italic.ttf", uni=True)
+    pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
    
     pdf.set_font('Montserrat', 'B', 20)
     pdf.set_text_color(160, 68, 44)
