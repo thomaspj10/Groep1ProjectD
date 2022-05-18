@@ -3,17 +3,8 @@ import pandas as pd
 import leafmap.foliumap as leafmap
 from datetime import datetime
 import utils.database as database
-import json
-from utils.settings import read_settings
 
 def create_eventmap():
-    from streamlit_autorefresh import st_autorefresh
-
-    # Reads the settings 
-    settings = read_settings()
-    seconds = settings["pages"]["refresh_rate_in_seconds"]
-
-    st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
 
     st.header("Eventmap")
 
@@ -36,17 +27,13 @@ def create_eventmap():
         start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
         end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
 
-    # Loads the longitude and latitude for positioning of the event map from the settings 
-    latitude = settings["eventmap"]["start_latitude"]
-    longitude = settings["eventmap"]["start_longitude"]
-
     # Draw the map
     m = leafmap.Map(
         draw_control=False,
         measure_control=False,
         fullscreen_control=False,
         attribution_control=True,
-        location=[latitude, longitude],
+        location=[-2, 23],
         zoom_start=6)
 
     m.add_basemap("Stamen.Terrain")

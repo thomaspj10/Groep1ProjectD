@@ -1,4 +1,2 @@
 *.pyc 
-**/geckodriver.log
-**/temp_map_img.png
 db.sqlite

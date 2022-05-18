@@ -1,4 +1,3 @@
-import datetime
 from paho.mqtt import client as mqtt_client
 import json
 import pandas as pd
@@ -45,9 +44,7 @@ def subscribe(client: mqtt_client, db_connection) -> None:
                 users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_connection)
                 for index, user in users.iterrows():
                     try:
-                        time = datetime.datetime.fromtimestamp(int(payload['time']))
-                        msg = f"\n{time}\n An event occured at node {payload['nodeId']}.\n Latitude: {payload['latitude']}, Longitude: {payload['longitude']}.\n {payload['probability']}% probability of a {payload['sound_type']}."
-                        notify.send_notification(user["telephone"], msg)
+                        notify.send_notification(user["telephone"])
                     except Exception as err:
                         print('Handling run-time error:', err)
             else:
