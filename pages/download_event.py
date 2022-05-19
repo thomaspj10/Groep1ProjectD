@@ -63,49 +63,65 @@ def create_page():
     # Create the pdf
     pdf = FPDF()
     pdf.add_page()
+    # pdf.line_width
     pdf.rotate(270)
    
+    # Adding custom fonts
     pdf.add_font("Montserrat", "", r"./media/fonts/Montserrat-Regular.ttf", uni=True)
     pdf.add_font("Montserrat", "B", r"./media/fonts/Montserrat-Bold.ttf", uni=True)
     pdf.add_font("Montserrat", "I", r"./media/fonts/Montserrat-Italic.ttf", uni=True)
     pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
    
-   
+    # Text box
     pdf_width = 297
-    tb_x = 35
-    tb_w = pdf_width - tb_x * 2
-    pdf.image('./media/images/text_box_background.png', x=35, y=-177.5, w=tb_w, h=40, type='', link='')
+    text_box_x = 35
+    text_box_width = pdf_width - text_box_x * 2
+    pdf.image('./media/images/text_box_background.png', x=35, y=-177.5, w=text_box_width, h=40, type='', link='')
     
+    # Logos
     pdf.image('./media/images/alten_logo.png', x=12.5, y=-180, w=15, h=15*1.68, type='', link='')
     pdf.image('./media/images/chengeta_wildlife_logo.jpg', x=12.5, y=-150, w=15, h=15, type='', link='')
 
     col_1_x = 42.5
     col_1_y = -155
+    
+    # Header text
     pdf.set_font('Montserrat', 'B', 20)
     pdf.set_text_color(160, 68, 44)
     pdf.text(col_1_x, y=col_1_y-10, txt=f"Information about Event #{event_id}")
-   
+
+    # Collumn 1 text
     pdf.set_font('Montserrat', "", 12)
     pdf.set_text_color(255, 255, 255)
-    
     pdf.text(col_1_x, y=col_1_y, txt=f"Node ID: {node_id}")
     pdf.text(col_1_x, y=col_1_y+5, txt=f"Type: {sound_type}")
     pdf.text(col_1_x, y=col_1_y+10, txt=f"Probability: {probability}%")
 
+    # Collumn 2 text
     col_2_x = 100
-    col_2_y = -155.5
+    col_2_y = col_1_x
     pdf.text(x=col_2_x, y=col_2_y, txt=f"Time: {time}")
     pdf.text(x=col_2_x, y=col_2_y+5, txt=f"Latitude: {latitude}")
     pdf.text(x=col_2_x, y=col_2_y+10, txt=f"Longitude: {longitude}")
     
-    img_width = 297
-    img_height_width_ratio = 2.0237037037
-    img_height = img_width / img_height_width_ratio + 5
-    pdf.image('./media/images/text_box_background.png', x=0, y=-127, w=img_width, h=img_height, type = '', link = '')
-    img_width -= 20
-    img_height = img_width / img_height_width_ratio
-    pdf.image("./media/images/temp_map_img.png", x=0+10, y=-127+5, w=img_width, h=img_height)
+    # PDF dimensions
+    # pixel : milimeter
+    #   1   : 0.264583
+    PDF_WIDTH_IN_MM = 297
+    PDF_HEIGHT_IN_MM = 210
     
+    # Map and background image
+    img_width = PDF_WIDTH_IN_MM
+    
+    # Backgroun
+    img_width_height_ratio = 2.0237037037
+    img_height = img_width / img_width_height_ratio + 5
+    pdf.image('./media/images/text_box_background.png', x=0, y=-127, w=img_width, h=img_height, type = '', link = '')
+    
+    # Map
+    img_width -= 20
+    img_height = img_width / img_width_height_ratio
+    pdf.image("./media/images/temp_map_img.png", x=0+10, y=-127+5, w=img_width, h=img_height)
     
     pdf_bytes = pdf.output(dest='S').encode('latin-1')
     
