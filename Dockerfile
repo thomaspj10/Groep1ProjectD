@@ -4,7 +4,7 @@ RUN apt-get update && apt-get -y install tk tcl
 RUN pip install --upgrade cython
 RUN pip install --upgrade pip
 
-RUN mkdir -p /user/src/app
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY ./requirements.txt .
