@@ -1,10 +1,18 @@
-version: '1.0'
+version: '1.1'
 services:
-  app:
+  backend:
     build: ./
-    container_name: chenqueta_app
+    container_name: chenqueta_backend
     volumes:
-      - .:/usr/src/app
+      - ./:/usr/src/app/:rw
+    command: python backend.py
+    
+  frontend:
+    build: ./
+    container_name: chenqueta_frontend
+    volumes:
+      - ./:/usr/src/app/:rw
     ports: 
       - 28501:8501
+    command: streamlit run main.py
   
