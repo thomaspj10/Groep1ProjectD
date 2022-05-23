@@ -72,10 +72,15 @@ def create_page():
     pdf.add_font("Montserrat", "I", r"./media/fonts/Montserrat-Italic.ttf", uni=True)
     pdf.add_font("Montserrat", "BI", r"./media/fonts/Montserrat-BoldItalic.ttf", uni=True)
    
+    # PDF dimensions
+    # pixel : milimeter
+    #   1   : 0.264583
+    PDF_WIDTH_IN_MM = 297
+    PDF_HEIGHT_IN_MM = 210
+    
     # Text box
-    pdf_width = 297
-    text_box_x = 35
-    text_box_width = pdf_width - text_box_x * 2
+    text_box_x_margin = 35
+    text_box_width = PDF_WIDTH_IN_MM - text_box_x_margin * 2
     pdf.image('./media/images/text_box_background.png', x=35, y=-177.5, w=text_box_width, h=40, type='', link='')
     
     # Logos
@@ -104,16 +109,11 @@ def create_page():
     pdf.text(x=col_2_x, y=col_2_y+5, txt=f"Latitude: {latitude}")
     pdf.text(x=col_2_x, y=col_2_y+10, txt=f"Longitude: {longitude}")
     
-    # PDF dimensions
-    # pixel : milimeter
-    #   1   : 0.264583
-    PDF_WIDTH_IN_MM = 297
-    PDF_HEIGHT_IN_MM = 210
     
     # Map and background image
     img_width = PDF_WIDTH_IN_MM
     
-    # Backgroun
+    # Map-Background
     img_width_height_ratio = 2.0237037037
     img_height = img_width / img_width_height_ratio + 5
     pdf.image('./media/images/text_box_background.png', x=0, y=-127, w=img_width, h=img_height, type = '', link = '')
