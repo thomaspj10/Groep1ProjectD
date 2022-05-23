@@ -33,7 +33,7 @@ def create_page():
             zoom_control=False,
             search_control=False,
             location=[df.at[0, "latitude"], df.at[0, "longitude"]],
-            zoom_start=10)
+            zoom_start=11.5)
     m.add_basemap("Stamen.Terrain")
     m.add_circle_markers_from_xy(
         df, x="longitude", y="latitude", radius=10, color="blue", fill_color="black")
@@ -99,7 +99,7 @@ def create_page():
 
     # Collumn 2 text
     col_2_x = 100
-    col_2_y = col_1_x
+    col_2_y = col_1_y
     pdf.text(x=col_2_x, y=col_2_y, txt=f"Time: {time}")
     pdf.text(x=col_2_x, y=col_2_y+5, txt=f"Latitude: {latitude}")
     pdf.text(x=col_2_x, y=col_2_y+10, txt=f"Longitude: {longitude}")
