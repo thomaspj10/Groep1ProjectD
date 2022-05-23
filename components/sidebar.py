@@ -20,9 +20,10 @@ def create_page():
 
         # make logout button in sidebar
         def logout_click():
-            # TODO: BROKEN NEED TO FIX THIS
             del cookies.get_cookies()["logged_in"]
-        
+            del cookies.get_cookies()["email"]
+            del cookies.get_cookies()["authentication_level"]
+            
         st.sidebar.button("Logout", on_click=logout_click)
         
         available_pages.remove(available_pages[0])
