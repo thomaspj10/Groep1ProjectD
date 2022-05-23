@@ -1,41 +1,41 @@
 import sqlite3
+from hashlib import sha256
 
 # create one connection to the sqlite database
 # a database will be created if it does not yet exists
 # get a connection by importing this file and calling the get_connection function
 def get_connection():
     return sqlite3.connect("./db.sqlite")
-def insert_into_event_table(connection, data) -> int:
-    """
-    Insert data which hold the data of a node event
-    :param conn: the Connection object
-    :param data:
-    :return 0 or -1:
-    """
-    if len(data) != 7:
-        raise TypeError(f"Query data collection has to be of length 7, currently: {len(data)}")
-        
-    try:
-        query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
-        cursor = connection.cursor()
-        cursor.execute(query, data)
-        connection.commit()
-        return 0
-    
-    except TypeError as err:
-        print('Handling run-time error:', err)
-        return -1
-        
-def select_user_by_receive_notifications(connection, receive_notifications: bool) -> list:
-    """
-    Query users by receive_notifications
-    :param conn: the Connection object
-    :param receive_notifications:
-    :return a list of users:
-    """
 
+def setup():
+    connection = get_connection()
     cursor = connection.cursor()
-    
-    # If receive_notifications true add NOT to to query, else nothing
-    cursor.execute(f"SELECT * FROM user WHERE {'NOT ' if receive_notifications == True else ''}receive_notifications")
-    return cursor.fetchall()
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS user( 
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
+        email TEXT,
+        telephone TEXT,
+        authentication_level INTEGER,
+        receive_notifications INTEGER
+    )""")
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS event(
+        event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        node_id INTEGER,
+        time INTEGER,
+        latitude FLOAT,
+        longitude FLOAT,
+        sound_type TEXT,
+        probability INTEGER,
+        sound TEXT
+    )""")
+
+    password = sha256(("admin1MPlGCnOwSywPTg5BXbZ").encode("utf-8")).hexdigest()
+
+    cursor.execute(f"""INSERT INTO user (username, password, email, telephone, authentication_level, receive_notifications) 
+        VALUES ('Admin', '{password}', 'admin@alten.nl', '0612345678', 2, False)
+    """)
+
+    connection.commit()

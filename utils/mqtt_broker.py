@@ -3,7 +3,7 @@ from paho.mqtt import client as mqtt_client
 import json
 import pandas as pd
 import utils.notifications as notify
-from utils.database import insert_into_event_table, select_user_by_receive_notifications
+import utils.database as database
 from uuid import uuid4
 
 BROKER = "95.217.2.100"
@@ -26,7 +26,7 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-def subscribe(client: mqtt_client, db_connection) -> None:
+def subscribe(client: mqtt_client) -> None:
     def on_message(client, userdata, msg):
         payload_jsonstring = msg.payload.decode()
         payload = json.loads(payload_jsonstring)
@@ -39,17 +39,38 @@ def subscribe(client: mqtt_client, db_connection) -> None:
                 payload["sound"]
             ]
             
-            succes = insert_into_event_table(db_connection, query_data) == 0
+            
+            db_conn = database.get_connection()
+        
+            if len(query_data) != 7:
+                raise TypeError(f"Query data collection has to be of length 7, currently: {len(query_data)}")
+                
+            succes: bool = False
+            try:
+                query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
+                cursor = db_conn.cursor()
+                cursor.execute(query, query_data)
+                db_conn.commit()
+                succes = True
+            
+            except TypeError as err:
+                print('Handling run-time error:', err)
+                succes = False
+                
+            
             if succes:
                 print("Succeeded to insert data into database.")
-                users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_connection)
+                
+                users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_conn)
                 for index, user in users.iterrows():
                     try:
                         time = datetime.datetime.fromtimestamp(int(payload['time']))
                         msg = f"\n{time}\n An event occured at node {payload['nodeId']}.\n Latitude: {payload['latitude']}, Longitude: {payload['longitude']}.\n {payload['probability']}% probability of a {payload['sound_type']}."
                         notify.send_notification(user["telephone"], msg)
+                
                     except Exception as err:
                         print('Handling run-time error:', err)
+            
             else:
                 print("Failed to insert data into database.")
             
