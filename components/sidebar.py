@@ -1,7 +1,6 @@
 import streamlit as st
 
 from pages import *
-from pages import historical_data
 import utils.cookies as cookies
 
 def create_page():
@@ -12,7 +11,7 @@ def create_page():
         Page("Eventmap", 1, pages.eventmap.create_eventmap),
         Page("Recent Events", 1, pages.recent_events.create_page),
         Page("Settings", 2, pages.settings_page.create_page),
-        Page("Historical Data", 1, historical_data.create_page)
+        Page("Historical Data", 1, pages.historical_data.create_page)
     ]
 
     # Get the authentication level of the current logged in user.

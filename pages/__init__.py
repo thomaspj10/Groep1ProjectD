@@ -5,3 +5,4 @@ import pages.create_account
 import pages.dashboard
 import pages.recent_events
 import pages.settings_page
+import pages.historical_data
