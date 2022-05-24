@@ -12,9 +12,14 @@ from PIL import Image
 from fpdf import FPDF
 import time as ti
 
+
 __TEMP_IMG_PATH = "./media/images/temp-maps/"
 
 def create_page():
+    # st.write("Preparing download...")\
+    textbox = st.empty()
+    textbox.write("Preparing download...")
+    
     event_id = st.experimental_get_query_params()["event"][0]
     if not event_id.isnumeric():
         return
@@ -75,7 +80,6 @@ def create_page():
     # Wait for file to be saved
     counter = 0
     while True:
-        print(counter)
         ti.sleep(0.2)
         if os.path.isfile(f"{__TEMP_IMG_PATH}{img_uuid}.png"):
             break
@@ -88,6 +92,7 @@ def create_page():
         
     pdf_bytes = create_pdf(event, img_uuid)
 
+    textbox.write("Download is ready:")
     # Create the download button.
     st.download_button(
         label="Download the summary", 
@@ -96,6 +101,10 @@ def create_page():
         on_click=on_download
     )
     
+    import time
+    from utils.settings import read_settings
+    settings = read_settings()
+    time.sleep(settings["pages"]["refresh_rate_in_seconds"])
     
 def create_pdf(event: pd.DataFrame, map_img_uuid):
     # Splits and converts data
