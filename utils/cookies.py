@@ -5,9 +5,7 @@ __cookies = None
 
 def initialize_cookes():
     global __cookies
-    __cookies = CookieManager(
-        prefix="prefix",
-    )
+    __cookies = CookieManager()
     if not __cookies.ready():
         st.stop()
     
