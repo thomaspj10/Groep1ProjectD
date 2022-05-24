@@ -74,8 +74,10 @@ def create_page():
 
     df = df[df['probability'] >= probability_input]
 
-    # Gets the amount of colums and sets max_page
+    # Sets the maximum page
     max_page = ceil(df.shape[0] / 10) - 1
+
+    # Sorts with the values and order and only shows 'limit' rows with the page offset 
     limit = 10
     offset = st.session_state.page * 10
     df = df.sort_values(sorting_element_input.replace(" ", "_").replace("Date", "time").lower(), ascending="Ascending" == sorting_order_input).iloc[offset : offset + limit]
