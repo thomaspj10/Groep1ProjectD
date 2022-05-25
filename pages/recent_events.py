@@ -14,6 +14,11 @@ def create_page():
     seconds = settings["pages"]["refresh_rate_in_seconds"]
 
     st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
+    
+    # counter = seconds
+    # timer = st.empty()
+    # timer.write(f"Refreshing in {counter} sec")
+    
 
     connection = database.get_connection()
 
@@ -59,3 +64,9 @@ def create_page():
         cols[6].text(events.at[index, 'sound_type'])
         cols[7].text(events.at[index, 'probability'])
         cols[8].audio(events.at[index, 'sound'])
+        
+    # import time 
+    # while counter != 0:
+    #     time.sleep(1)
+    #     counter -= 1
+    #     timer.write(f"Refreshing in {counter} sec")

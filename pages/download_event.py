@@ -16,7 +16,17 @@ import time as ti
 __TEMP_IMG_PATH = "./media/images/temp-maps/"
 
 def create_page():
-    # st.write("Preparing download...")\
+    with st.form(key="dont_refresh", clear_on_submit=False):
+        event_to_download = st.number_input("Enter event ID", value=1)
+        submitted = st.form_submit_button("Create download link")
+        
+        if submitted:
+            import streamlit.components.v1 as component
+            component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=400, scrolling=False)
+
+
+def create_download():
+    
     textbox = st.empty()
     textbox.write("Preparing download...")
     
@@ -98,13 +108,10 @@ def create_page():
         label="Download the summary", 
         data=pdf_bytes, 
         file_name="summary.pdf", 
-        on_click=on_download
+        # on_click=on_download 
+        key="dont_refresh"
     )
-    
-    import time
-    from utils.settings import read_settings
-    settings = read_settings()
-    time.sleep(settings["pages"]["refresh_rate_in_seconds"])
+   
     
 def create_pdf(event: pd.DataFrame, map_img_uuid):
     # Splits and converts data

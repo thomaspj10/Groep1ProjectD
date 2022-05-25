@@ -3,7 +3,6 @@ import pandas as pd
 import leafmap.foliumap as leafmap
 from datetime import datetime
 import utils.database as database
-import json
 from utils.settings import read_settings
 
 def create_eventmap():
@@ -13,10 +12,13 @@ def create_eventmap():
     settings = read_settings()
     seconds = settings["pages"]["refresh_rate_in_seconds"]
 
-    st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
-
+    st_autorefresh(interval=seconds * 1000, key="map_refresh")
     st.header("Eventmap")
 
+    # counter = seconds
+    # timer = st.empty()
+    # timer.write(f"Refreshing in {counter} sec")
+    
     # Expander to hide the filter options if the user does not want to use them
     with st.expander("Filter options"):
 
@@ -52,7 +54,7 @@ def create_eventmap():
         fullscreen_control=False,
         attribution_control=True,
         location=[latitude, longitude],
-        zoom_start=6)
+        zoom_start=6, key="map_refresh")
 
     m.add_basemap("Stamen.Terrain")
 
@@ -80,50 +82,19 @@ def create_eventmap():
     m.to_streamlit(width=700, height=500)
 
 
-    with st.form("download event"):
+    with st.form(key="dont_refresh", clear_on_submit=False):
         event_to_download = st.number_input("Enter event ID", value=1)
-        # form_cols = st.columns(5)
-        # with form_cols[2]:
         submitted = st.form_submit_button("Create download link")
+        
         if submitted:
-            # import pages.download_event as de
-            
-            
-            # st.download_button(
-            #     label="Download the summary", 
-            #     data=de.create_page(event_to_download), 
-            #     file_name="summary.pdf", 
-            # )
-            
-            # link = f'[Summary of event {event_to_download}](http://localhost:8501?event={event_to_download})'
-            # st.markdown("Download link: " + link, unsafe_allow_html=True)
-            # st.write("Preparing download:")
-            
             import streamlit.components.v1 as component
-            component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=400)
-            # import streamlit_autorefresh as sa
-            # sa.st_autorefresh(0, limit=1)
-    
+            component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=500, scrolling=False)
 
-    # event_to_download = st.text_input("Enter event ID", "1")
-    # submitted = st.button("Download")
-    # if submitted:
-    #     import pages.download_event as de
+        # st.markdown(f"<iframe src='http://localhost:8501?event={event_to_download}'> </iframe>",unsafe_allow_html=True)
         
-    #     print(event_to_download)
-    #     st.download_button(
-    #         label="Download the summary", 
-    #         data=de.create_page(event_to_download), 
-    #         file_name="summary.pdf", 
-    #     )
-    
-        
-    # import streamlit.components.v1 as comp
-    # comp.html(
-    #     f"""
-    #     <button onclick="console.log('test')">click</button>
-    #     """,
-    #     width=50,height=50
-    # )
-    
+    # import time 
+    # while counter != 0:
+    #     time.sleep(1)
+    #     counter -= 1
+    #     timer.write(f"Refreshing in {counter} sec")
     

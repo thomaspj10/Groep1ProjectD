@@ -6,3 +6,4 @@ import pages.dashboard
 import pages.recent_events
 import pages.settings_page
 import pages.historical_data
+import pages.download_event
