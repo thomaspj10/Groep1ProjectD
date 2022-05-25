@@ -6,13 +6,12 @@ import utils.cookies as cookies
 def create_page():
     available_pages = [
         Page("Login", 0, pages.login.create_page),
-        Page("Eventmap", 1, pages.eventmap.create_eventmap),
-        Page("Recent Events", 1, pages.recent_events.create_page),
+        Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Historical Data", 1, pages.historical_data.create_page),
         Page("Download Event", 1, pages.download_event.create_page),
-        Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Create Account", 2, pages.create_account.create_page),
-        Page("Settings", 2, pages.settings_page.create_page),
+        Page("Account Settings", 1, pages.acount_settings.create_page),
+        Page("Application Settings", 2, pages.application_settings.create_page),
     ]
 
     # Get the authentication level of the current logged in user.

@@ -1,21 +1,25 @@
-import streamlit as st
-import pandas as pd
-import utils.database as database 
+from pages import Page, eventmap, recent_events
+import utils.database as database
 import utils.cookies as cookies
+import pandas as pd
+import streamlit as st
+from utils.settings import read_settings
+from streamlit_autorefresh import st_autorefresh
 
-def create_page():
+def create_page(*pages: list[Page]):
+    # Reads the settings 
+    settings = read_settings()
+    seconds = settings["pages"]["refresh_rate_in_seconds"]
+
+    st_autorefresh(interval=seconds * 1000, key="map_refresh")
+
     conn = database.get_connection()
     users = pd.read_sql("SELECT * FROM user", conn)
     filtered_users = users[users["email"] == cookies.get_cookies()["email"]]
     
     user = filtered_users.iloc[0]
         
-    st.write("Welcome " + user["username"] + ",")
+    st.write("Welcome " + user["username"] + ".")
 
-    receive_notifications = st.checkbox(label = "Do you want to receive notifications?", value=user["receive_notifications"])
-
-    for index, _user in users.iterrows():
-        if user["email"] == _user["email"]:
-            users.at[index, "receive_notifications"] = int(receive_notifications)
-    
-    users.to_sql("user", conn, if_exists="replace", index=False)
+    eventmap.create_eventmap()
+    recent_events.create_page()

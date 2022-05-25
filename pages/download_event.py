@@ -26,7 +26,6 @@ def create_page():
 
 
 def create_download():
-    
     textbox = st.empty()
     textbox.write("Preparing download...")
     
@@ -43,18 +42,6 @@ def create_download():
         st.write(f"An event with the id '{event_id}' does not exist!")
         return
     
-    hr_in_unix = 3600 # 60sec * 60min
-    current_unix_time = ti.time()
-    recent_events = pd.read_sql(f"""
-        SELECT * 
-        FROM event 
-        WHERE time BETWEEN {current_unix_time - hr_in_unix} AND {current_unix_time}
-            EXCEPT
-        SELECT * 
-        FROM event
-        WHERE event_id={event_id}
-        """, conn)
-  
     # Create a map.
     m = leafmap.Map(
             draw_control=False,
@@ -68,11 +55,6 @@ def create_download():
     m.add_basemap("Stamen.Terrain")
     m.add_circle_markers_from_xy(
         df, x="longitude", y="latitude", radius=10, color="blue", fill_color="black")
-    
-    for index, event in recent_events.iterrows():
-        m.add_circle_markers_from_xy(
-            recent_events[recent_events["event_id"] == event["event_id"]], x="longitude", y="latitude", radius=10, color="red", fill_color="orange"
-        )
     
     def on_download():
         st.experimental_set_query_params(
@@ -103,12 +85,13 @@ def create_download():
     pdf_bytes = create_pdf(event, img_uuid)
 
     textbox.write("Download is ready:")
+    
     # Create the download button.
     st.download_button(
         label="Download the summary", 
         data=pdf_bytes, 
         file_name="summary.pdf", 
-        # on_click=on_download 
+        on_click=on_download,
         key="dont_refresh"
     )
    

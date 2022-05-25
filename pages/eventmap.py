@@ -10,19 +10,13 @@ def create_eventmap():
 
     # Reads the settings 
     settings = read_settings()
-    seconds = settings["pages"]["refresh_rate_in_seconds"]
 
-    st_autorefresh(interval=seconds * 1000, key="map_refresh")
     st.header("Eventmap")
 
-    # counter = seconds
-    # timer = st.empty()
-    # timer.write(f"Refreshing in {counter} sec")
-    
     # Expander to hide the filter options if the user does not want to use them
     with st.expander("Filter options"):
 
-         # Create the select box to pick the sound type
+        # Create the select box to pick the sound type
         option_sound_type = st.selectbox("Select sound type", ["All", "Car", "Gun", "Animal"])
 
         # Create the slider to pick a value for probability (between 0 and 100 with steps of 1)
@@ -48,18 +42,15 @@ def create_eventmap():
 
     # Draw the map
     m = leafmap.Map(
-        search_control=False,
         draw_control=False,
         measure_control=False,
         fullscreen_control=False,
-        attribution_control=True,
+        attribution_control=False,
+        search_control=False,
         location=[latitude, longitude],
         zoom_start=6, key="map_refresh")
 
     m.add_basemap("Stamen.Terrain")
-
-    # Get the data from excel sheet (update to DB later)
-    #df = pd.read_excel("./prototype/eventmapdata.xlsx")
 
     # Create a database connection.
     conn = database.get_connection()
@@ -81,20 +72,19 @@ def create_eventmap():
     df, x="longitude", y="latitude", radius=10, color="blue", fill_color="black")
     m.to_streamlit(width=700, height=500)
 
-
-    with st.form(key="dont_refresh", clear_on_submit=False):
-        event_to_download = st.number_input("Enter event ID", value=1)
-        submitted = st.form_submit_button("Create download link")
+    # m.add_legend
+    # m.add_marker
+    # m.fit_bounds
+    # st.spinner
+    
+    ##########################################################################################################################
+    # with st.form(key="dont_refresh", clear_on_submit=False):
+    #     event_to_download = st.number_input("Enter event ID", value=1)
+    #     submitted = st.form_submit_button("Create download link")
         
-        if submitted:
-            import streamlit.components.v1 as component
-            component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=500, scrolling=False)
+    #     if submitted:
+    #         import streamlit.components.v1 as component
+    #         component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=200, scrolling=False)
 
         # st.markdown(f"<iframe src='http://localhost:8501?event={event_to_download}'> </iframe>",unsafe_allow_html=True)
         
-    # import time 
-    # while counter != 0:
-    #     time.sleep(1)
-    #     counter -= 1
-    #     timer.write(f"Refreshing in {counter} sec")
-    
