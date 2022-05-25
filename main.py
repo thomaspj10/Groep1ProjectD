@@ -47,6 +47,7 @@ cookies.initialize_cookes()
 
 if "event" in st.experimental_get_query_params():
     pages.download_event.create_download()
+    
 else:
     import components.sidebar
     components.sidebar.create_page()

@@ -20,6 +20,7 @@ def create_page(*pages: list[Page]):
     user = filtered_users.iloc[0]
         
     st.write("Welcome " + user["username"] + ".")
-
+    
     eventmap.create_eventmap()
     recent_events.create_page()
+    

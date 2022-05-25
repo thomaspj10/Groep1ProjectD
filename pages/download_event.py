@@ -21,8 +21,8 @@ def create_page():
         submitted = st.form_submit_button("Create download link")
         
         if submitted:
-            import streamlit.components.v1 as component
-            component.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=400, scrolling=False)
+            import streamlit.components.v1 as components
+            components.iframe(f"http://localhost:8501?event={event_to_download}", width=200, height=400, scrolling=False)
 
 
 def create_download():

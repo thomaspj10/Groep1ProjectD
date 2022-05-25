@@ -1,10 +1,8 @@
-from utils import mqtt_broker
-from utils import database
-
 def run() -> None:
+    from utils import mqtt_broker, database
     database.setup()
     
-    client = mqtt_broker.connect_mqtt()
+    client = mqtt_broker.connect()
     mqtt_broker.subscribe(client)
     client.loop_forever()
 

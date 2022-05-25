@@ -1,9 +1,8 @@
 import datetime
-from paho.mqtt import client as mqtt_client
 import json
 import pandas as pd
-import utils.notifications as notify
-import utils.database as database
+from paho.mqtt import client as mqtt_client
+from utils import notifications, database
 from uuid import uuid4
 
 BROKER = "95.217.2.100"
@@ -12,7 +11,7 @@ TOPIC = "chengeta/notifications"
 USERNAME = "chengeta_user"
 PASSWORD = "chengeta2022"
 
-def connect_mqtt() -> mqtt_client:
+def connect() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker.")
@@ -66,7 +65,7 @@ def subscribe(client: mqtt_client) -> None:
                     try:
                         time = datetime.datetime.fromtimestamp(int(payload['time']))
                         msg = f"\n{time}\n An event occured at node {payload['nodeId']}.\n Latitude: {payload['latitude']}, Longitude: {payload['longitude']}.\n {payload['probability']}% probability of a {payload['sound_type']}."
-                        notify.send_notification(user["telephone"], msg)
+                        notifications.send_notification(user["telephone"], msg)
                 
                     except Exception as err:
                         print('Handling run-time error:', err)

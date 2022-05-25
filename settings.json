@@ -3,7 +3,9 @@
     "start_latitude": -2.1770924670621916,
     "start_longitude": 21.135576612143538
   },
-  "pages": { "refresh_rate_in_seconds": 30 },
+  "pages": { 
+    "refresh_rate_in_seconds": 30 
+  },
   "twilio_sms_service": {
     "account_sid": "ACf1a8a3ce82a894972f2ec247038279d6",
     "auth_token": "8c43f388fd655fad1e3f810b5a431b15",
