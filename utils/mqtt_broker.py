@@ -48,7 +48,7 @@ def subscribe(client: mqtt_client, db_connection) -> None:
                 for index, user in users.iterrows():
                     try:
                         time = datetime.datetime.fromtimestamp(int(payload['time']))
-                        msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://145.24.222.197:8501/?event={event_id}"
+                        msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://www.chengetawildlife.nl:8501/?event={event_id}"
                         notify.send_notification(user["telephone"], msg)
                     except Exception as err:
                         print('Handling run-time error:', err)
