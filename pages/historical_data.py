@@ -1,8 +1,10 @@
+from math import ceil
+from re import L
 from turtle import onclick
 from requests import session
 import streamlit as st
 import datetime
-import time
+from time import mktime
 import pandas as pd
 from utils.database import get_connection
 
@@ -55,17 +57,30 @@ def create_page():
     # Gets database connection
     conn = get_connection()
 
-    # Creates the query with all the filters and ordering
-    df = pd.read_sql(f"""
-    SELECT * FROM event
-    WHERE 
-    probability >= {probability_input}
-    {f"AND sound_type = '{sound_type_input.lower()}'" if sound_type_input != "All" else ""}
-    {f"AND node_id = {node_id_input}" if node_id_input != -1 else ""}
-    {f"AND time BETWEEN {time.mktime(start_date_input.timetuple())} AND {time.mktime(end_date_input.timetuple())}" if start_date_input != end_date_input else
-    f"AND time BETWEEN {time.mktime(start_date_input.timetuple())} AND {time.mktime((end_date_input + datetime.timedelta(days = 1)).timetuple())}"}
-    ORDER BY {"node_id" if sorting_element_input == "Node ID" else "time" if sorting_element_input == "Date" else "probability"} {"DESC" if sorting_order_input == "Descending" else "ASC"}
-    LIMIT 10 OFFSET {st.session_state.page * 10};""", conn)
+    # Gets all the records
+    df = pd.read_sql("SELECT * FROM event", conn)
+
+    # All the filtering options
+    if (sound_type_input != "All"):
+        df = df[df['sound_type'] == sound_type_input.lower()]
+
+    if (start_date_input == end_date_input):
+        df = df[(df["time"] >= mktime(start_date_input.timetuple())) & (df["time"] <= mktime((end_date_input + datetime.timedelta(days = 1)).timetuple()))]
+    else:
+        df = df[(df['time'] >= mktime(start_date_input.timetuple())) & (df['time'] <= mktime(end_date_input.timetuple()))]
+
+    if (node_id_input != -1):
+        df = df[df['node_id'] == node_id_input]
+
+    df = df[df['probability'] >= probability_input]
+
+    # Sets the maximum page
+    max_page = ceil(df.shape[0] / 10) - 1
+
+    # Sorts with the values and order and only shows 'limit' rows with the page offset 
+    limit = 10
+    offset = st.session_state.page * 10
+    df = df.sort_values(sorting_element_input.replace(" ", "_").replace("Date", "time").lower(), ascending="Ascending" == sorting_order_input).iloc[offset : offset + limit]
 
     # Adds a date column
     df['date'] = df['time']
@@ -113,7 +128,7 @@ def create_page():
     with btn_cols[2]:
         st.markdown(f"#### Current page: {st.session_state.page + 1}")
     with btn_cols[3]:
-        st.button("Next page > ", on_click=next_page)
+        st.button("Next page > ", disabled=st.session_state.page >= max_page, on_click=next_page)
 
 def previous_page():
     st.session_state.page -= 1
