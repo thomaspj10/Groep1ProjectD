@@ -1,8 +1,10 @@
 from pages.page import Page
-import pages.eventmap
 import pages.login
 import pages.create_account
-import pages.dashboard
+import pages.acount_settings
 import pages.recent_events
-import pages.settings_page
+import pages.application_settings
 import pages.historical_data
+import pages.download_event
+import pages.dashboard
+import pages.event_map

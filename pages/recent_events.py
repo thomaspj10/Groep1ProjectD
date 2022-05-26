@@ -2,18 +2,9 @@ import streamlit as st
 import utils.database as database
 import pandas as pd
 from datetime import datetime
-from utils.settings import read_settings
 
 def create_page():
-    from streamlit_autorefresh import st_autorefresh
-
     st.title("Recent events")
-
-    # Reads the settings
-    settings = read_settings()
-    seconds = settings["pages"]["refresh_rate_in_seconds"]
-
-    st_autorefresh(interval=seconds * 1000, key="dataframerefresh")
 
     connection = database.get_connection()
 
@@ -59,3 +50,4 @@ def create_page():
         cols[6].text(events.at[index, 'sound_type'])
         cols[7].text(events.at[index, 'probability'])
         cols[8].audio(events.at[index, 'sound'])
+        
