@@ -4,8 +4,6 @@ import pandas as pd
 from datetime import datetime
 
 def create_page():
-    from streamlit_autorefresh import st_autorefresh
-
     st.title("Recent events")
 
     connection = database.get_connection()

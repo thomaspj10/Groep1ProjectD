@@ -6,7 +6,6 @@ import utils.cookies as cookies
 def create_page():
     available_pages = [
         Page("Login", 0, pages.login.create_page),
-        Page("Folium", 1, pages.test_map.create_page),
         Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Historical Data", 1, pages.historical_data.create_page),
         Page("Download Event", 1, pages.download_event.create_page),

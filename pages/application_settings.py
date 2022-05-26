@@ -10,8 +10,8 @@ def create_page():
     with st.form("settings_form"):
         # Latitude and Longitude settings
         st.write("The coordinates for the starting location of the event map")
-        settings["eventmap"]["latitude"] = st.number_input("Latitude", value=settings["eventmap"]["start_latitude"], format="%2.15f")
-        settings["eventmap"]["longitude"] = st.number_input("Longitude", value=settings["eventmap"]["start_longitude"], format="%2.15f")
+        settings["event_map"]["latitude"] = st.number_input("Latitude", value=settings["event_map"]["start_latitude"], format="%2.15f")
+        settings["event_map"]["longitude"] = st.number_input("Longitude", value=settings["event_map"]["start_longitude"], format="%2.15f")
 
         # Creates a line
         st.markdown("---")

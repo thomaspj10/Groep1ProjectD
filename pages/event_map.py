@@ -14,14 +14,14 @@ def create_page():
 
     # Loads the longitude and latitude for positioning of the event map from the settings 
     settings = read_settings()
-    latitude = settings["eventmap"]["start_latitude"]
-    longitude = settings["eventmap"]["start_longitude"]
+    latitude = settings["event_map"]["start_latitude"]
+    longitude = settings["event_map"]["start_longitude"]
     
     # Expander to hide the filter options if the user does not want to use them
     with st.expander("Filter options"):
 
         # Create the select box to pick the sound type
-        option_sound_type = st.selectbox("Select sound type", ["All", "Car", "Gun", "Animal", "Unknown"])
+        option_sound_type = st.selectbox("Select sound type", ["All", "Vehicle", "Gunshot", "Animal", "Unknown"])
 
         # Create the slider to pick a value for probability (between 0 and 100 with steps of 1)
         probability_slider = st.slider(label = 'Probability', value = 0, min_value = 0, max_value = 100, step = 1)
@@ -60,39 +60,62 @@ def create_page():
         location=[latitude, longitude],
         # tiles="Stamen Terrain",
         height="100%",
-        width="100%"
+        width="100%",
     )
+    
     folium.TileLayer('stamenterrain').add_to(m)
+    
+    ############################################################
+    from branca.element import Template, MacroElement
+
+    with open("./components/legend.html") as f:
+        legend = f.read()
+    
+    template = """
+    {% macro html(this, kwargs) %}
+    """ + legend + """
+    {% endmacro %}
+    """
+    
+    macro = MacroElement()
+    macro._template = Template(template)
+
+    m.add_child(macro)
+    ############################################################
 
     for _, event in df.iterrows():
+        color = color_picker(event)
         if event["sound_type"] == "unknown":
             icon = folium.Icon(
                 icon="question",
                 prefix="fa fa-question",
-                color="gray"
+                # color="gray"
+                color=color
             )
 
         elif event["sound_type"] == "vehicle":
             icon  = folium.Icon(
                 icon="car",
                 prefix="fa fa-car",
-                color="blue"
+                # color="blue"
+                color=color
             )
             
         elif event["sound_type"] == "animal":
             icon= folium.Icon(
-                icon="car",
+                icon="linux",
                 prefix="fa fa-linux",
                 # prefix="fa fa-exclamation"
                 # prefix="fa fa-binoculars"
-                color="green"
+                # color="green"
+                color=color
             )
             
         elif event["sound_type"] == "gunshot":
             icon = folium.Icon(
-                icon="car",
+                icon="exclamation",
                 prefix="fa fa-exclamation",
-                color="red"
+                color=color 
             )
             
         folium.Marker(
@@ -109,3 +132,36 @@ def create_page():
     # then gives the html to streamlit to display
     fig = folium.Figure().add_child(m)
     components.html(fig.render(), height=700)
+    
+def color_picker(event: pd.Series) -> str:
+    """
+    Color grading
+    
+    darkblue: (now-5min) <= time <= now
+    blue: (now-60min) <= time <= (now-5min)
+    lightblue: (now-6hr) <= time <= (now-60min)
+    cadetblue: (now-24hr) <= (now-6hr)
+    gray: else <= time <= (now-24hr)
+    
+    """
+    import time as ti
+    current_unix_time = ti.time()
+    
+    unix_5_min = 300 # 60sec * 5min
+    unix_1_hr = 3600 # 60sec * 60min
+    unix_6_hr = 21600
+    unix_1_d = 86400
+    unix_3_d = 259200
+
+    if event["time"] >= current_unix_time - unix_5_min:
+        return "red"
+    elif event["time"] >= current_unix_time - unix_1_hr:
+        return "orange"
+    elif event["time"] >= current_unix_time - unix_6_hr:
+        return "darkblue" 
+    elif event["time"] >= current_unix_time - unix_1_d:
+        return "blue"
+    elif event["time"] >= current_unix_time - unix_3_d:
+        return "lightblue"
+    else:
+        return "lightgray"
