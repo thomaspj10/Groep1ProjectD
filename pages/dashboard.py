@@ -1,4 +1,4 @@
-from pages import Page, eventmap, recent_events
+from pages import Page, eventmap, recent_events, test_map
 import utils.database as database
 import utils.cookies as cookies
 import pandas as pd
@@ -21,6 +21,7 @@ def create_page(*pages: list[Page]):
         
     st.write("Welcome " + user["username"] + ".")
     
-    eventmap.create_eventmap()
+    # eventmap.create_eventmap()
+    test_map.create_page()
     recent_events.create_page()
     

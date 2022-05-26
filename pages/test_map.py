@@ -58,11 +58,12 @@ def create_page():
     # The map
     m = folium.Map(
         location=[latitude, longitude],
-        tiles="Stamen Terrain",
+        # tiles="Stamen Terrain",
         height="100%",
         width="100%"
     )
-    
+    folium.TileLayer('stamenterrain').add_to(m)
+
     for _, event in df.iterrows():
         if event["sound_type"] == "unknown":
             icon = folium.Icon(
@@ -102,7 +103,7 @@ def create_page():
 
     list_lat_lon = list(zip(df["latitude"], df["longitude"]))
     m.fit_bounds(list_lat_lon)
-    
+
     # Creates a figure from the map,
     # then renders the html representation of the figure
     # then gives the html to streamlit to display

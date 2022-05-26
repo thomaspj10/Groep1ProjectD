@@ -2,14 +2,17 @@ import datetime
 import json
 import pandas as pd
 from paho.mqtt import client as mqtt_client
-from utils import notifications, database
+from utils import notifications, database, settings
 from uuid import uuid4
 
-BROKER = "95.217.2.100"
-PORT = 1883
-TOPIC = "chengeta/notifications"
-USERNAME = "chengeta_user"
-PASSWORD = "chengeta2022"
+__settings = settings.read_settings()
+
+__HOST = __settings["mqtt_broker"]["ipv4"]
+__PORT = __settings["mqtt_broker"]["port"]
+__TOPIC = __settings["mqtt_broker"]["topic"]
+__USERNAME = __settings["mqtt_broker"]["username"]
+__PASSWORD = __settings["mqtt_broker"]["password"]
+__CLIENTID = __settings["mqtt_broker"]["client_id"]
 
 def connect() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
@@ -18,10 +21,10 @@ def connect() -> mqtt_client:
         else:
             print("Failed to connect, return code %d\n" % rc)
 
-    client = mqtt_client.Client(str(uuid4()))
-    client.username_pw_set(USERNAME, PASSWORD)
+    client = mqtt_client.Client(__CLIENTID)
+    client.username_pw_set(__USERNAME, __PASSWORD)
     client.on_connect = on_connect
-    client.connect(BROKER, PORT)
+    client.connect(__HOST, __PORT)
     return client
 
 
@@ -76,5 +79,5 @@ def subscribe(client: mqtt_client) -> None:
         except Exception as err:
             print('Handling run-time error:', err)
         
-    client.subscribe(TOPIC)
+    client.subscribe(__TOPIC)
     client.on_message = on_message
