@@ -26,3 +26,8 @@ streamlit run main.py
 ```
 python backend.py
 ```
+
+### Running the tests
+```
+python -m unittest
+```
