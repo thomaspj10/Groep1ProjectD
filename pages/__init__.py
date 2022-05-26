@@ -8,3 +8,4 @@ import pages.application_settings
 import pages.historical_data
 import pages.download_event
 import pages.dashboard
+import pages.test_map

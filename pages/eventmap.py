@@ -6,8 +6,6 @@ import utils.database as database
 from utils.settings import read_settings
 
 def create_eventmap():
-    from streamlit_autorefresh import st_autorefresh
-
     # Reads the settings 
     settings = read_settings()
 
@@ -70,7 +68,9 @@ def create_eventmap():
     # Add markers to the map.
     m.add_circle_markers_from_xy(
     df, x="longitude", y="latitude", radius=10, color="blue", fill_color="black")
+    
     m.to_streamlit(width=700, height=500)
+    
 
     # m.add_legend
     # m.add_marker
