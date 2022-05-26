@@ -1,7 +1,7 @@
 from twilio.rest import Client
 from utils.settings import read_settings
 
-def send_notification(phone_number, message, pdf=""):
+def send_notification(phone_number, message):
     
     # Reads the settings
     settings = read_settings()

@@ -24,4 +24,3 @@ def create_page(*pages: list[Page]):
     # eventmap.create_eventmap()
     event_map.create_page()
     recent_events.create_page()
-    

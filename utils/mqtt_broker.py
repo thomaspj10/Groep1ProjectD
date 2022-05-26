@@ -3,6 +3,8 @@ import json
 import pandas as pd
 from paho.mqtt import client as mqtt_client
 from utils import notifications, database, settings
+
+
 from uuid import uuid4
 
 __settings = settings.read_settings()
@@ -41,7 +43,6 @@ def subscribe(client: mqtt_client) -> None:
                 payload["sound"]
             ]
             
-            
             db_conn = database.get_connection()
         
             if len(query_data) != 7:
@@ -59,7 +60,6 @@ def subscribe(client: mqtt_client) -> None:
                 print('Handling run-time error:', err)
                 succes = False
                 
-            
             if succes:
                 print("Succeeded to insert data into database.")
                 
@@ -67,9 +67,8 @@ def subscribe(client: mqtt_client) -> None:
                 for index, user in users.iterrows():
                     try:
                         time = datetime.datetime.fromtimestamp(int(payload['time']))
-                        msg = f"\n{time}\n An event occured at node {payload['nodeId']}.\n Latitude: {payload['latitude']}, Longitude: {payload['longitude']}.\n {payload['probability']}% probability of a {payload['sound_type']}."
-                        notifications.send_notification(user["telephone"], msg)
-                
+                        msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://www.chengetawildlife.nl:8501/?event={event_id}"
+                        notify.send_notification(user["telephone"], msg)
                     except Exception as err:
                         print('Handling run-time error:', err)
             
