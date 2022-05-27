@@ -1,6 +1,7 @@
 import sqlite3
 import unittest
 import utils.database as database
+import os
 
 class TestDatabase(unittest.TestCase):
 
@@ -9,6 +10,9 @@ class TestDatabase(unittest.TestCase):
         self.assertIsInstance(database.get_connection(), sqlite3.Connection)
         
     def test_tables_existence(self):
+        os.remove("db.sqlite")
+        database.setup()
+        
         conn = database.get_connection()
         cursor = conn.cursor()
         
