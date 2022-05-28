@@ -3,7 +3,7 @@ import utils.database as database
 from random import randint, uniform
 import time as ti
 
-def __run() -> None:
+def run() -> None:
     database.setup()
     unix_5_min = 300
     unix_1_d = 86400
@@ -75,4 +75,4 @@ def __insert_into_database(event: dict) -> None:
     
     
 if __name__ == "__main__":
-    __run()
+    run()
