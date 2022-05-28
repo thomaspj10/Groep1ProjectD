@@ -1,3 +1,4 @@
+from branca.element import Template, MacroElement
 from datetime import datetime
 import pandas as pd
 import streamlit as st
@@ -65,8 +66,6 @@ def create_page():
     folium.TileLayer('stamenterrain').add_to(m)
     
     ## Creates the legend
-    from branca.element import Template, MacroElement
-
     with open("./components/legend.html") as f:
         legend = f.read()
     
