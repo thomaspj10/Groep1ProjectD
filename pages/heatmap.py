@@ -13,6 +13,7 @@ def create_page():
     latitude = settings["event_map"]["start_latitude"]
     longitude = settings["event_map"]["start_longitude"]
     
+    st.header("Heatmap")
 
     # Draw the map.
     m = leafmap.Map(
@@ -30,4 +31,4 @@ def create_page():
         name="Heat map",
         radius=20,
     )
-    m.to_streamlit(width=700, height=500)
+    m.to_streamlit(width=700, height=700)
