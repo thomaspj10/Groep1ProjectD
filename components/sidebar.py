@@ -9,6 +9,7 @@ def create_page():
         Page("Dashboard", 1, pages.dashboard.create_page),
         Page("Historical Data", 1, pages.historical_data.create_page),
         Page("Download Event", 1, pages.download_event.create_page),
+        Page("Heatmap", 1, pages.heatmap.create_page),
         Page("Create Account", 2, pages.create_account.create_page),
         Page("Account Settings", 1, pages.acount_settings.create_page),
         Page("Application Settings", 2, pages.application_settings.create_page),

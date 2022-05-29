@@ -10,7 +10,7 @@ import folium
 from utils.settings import read_settings 
 
 def create_page():
-    st.header("Folium")
+    st.header("Event Map")
 
     # Loads the longitude and latitude for positioning of the event map from the settings 
     settings = read_settings()
