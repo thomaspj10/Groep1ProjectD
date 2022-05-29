@@ -147,9 +147,44 @@ def create_marker(event: pd.Series) -> folium.Marker:
             prefix="fa fa-exclamation",
             color=color 
         )
+
+    event_time = datetime.utcfromtimestamp(float(event["time"])).strftime("%Y/%m/%d %H:%M")
+    popup = folium.Popup(f"""
+        <style>
+            .popup-table td, th {{
+                padding-right:5px;
+            }}
+        </style>
+        <table class="popup-table"> 
+            <tr>
+                <th>Event ID</th>
+                <td>{event['event_id']}</td>
+                <th>Time</th>
+                <td>{event_time}</td>
+            </tr>
+            <tr>
+                <th>Node ID</th>
+                <td>{event['node_id']}</td>
+                <th>Latitude</th>
+                <td>{event['latitude']}</td>
+            </tr>
+            <tr>
+                <th>Probability</th>
+                <td>{event['probability']}%</td>
+                <th>Longitude</th>
+                <td>{event['longitude']}</td>
+            </tr>
+        </table>
+        <br>
+        <audio preload='metadata' controls> 
+            <source src='{event['sound']}' type='audio/mpeg'>
+            Your browser does not support the <code>audio</code> element.
+        </audio>
+    """)
         
     return folium.Marker(
         location=[event["latitude"], event["longitude"]],
-        popup=event["event_id"],
+        popup=popup,
         icon=icon,
     )
+    
