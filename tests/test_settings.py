@@ -5,10 +5,10 @@ import json
 class TestDatabase(unittest.TestCase):
 
     def test_settings_exists(self):
-        self.assertTrue(os.path.exists("settings.json"))
+        self.assertTrue(os.path.exists("/shared/settings.json"))
         
     def test_settings_contains_keys(self):
-        with open("settings.json", "r") as f:
+        with open("/shared/settings.json", "r") as f:
             settings = json.load(f)
             
         self.assertTrue("event_map" in settings)
