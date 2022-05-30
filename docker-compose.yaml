@@ -7,20 +7,19 @@ services:
       dockerfile: Dockerfile
     container_name: chenqueta_backend
     volumes:
-      - shared:/usr/src/app/
+      - .:/usr/src/app/
     command: python backend.py
     
   frontend:
+    depends_on:
+      - backend
     image: chenqueta_frontend:4.0
     build:
       context: ./
       dockerfile: Dockerfile
     container_name: chenqueta_frontend
     volumes:
-      - shared:/usr/src/app/
+      - .:/usr/src/app/
     ports: 
       - 8501:8501
     command: streamlit run main.py
-
-volumes:
-  shared:
