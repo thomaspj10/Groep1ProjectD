@@ -3,15 +3,20 @@ import streamlit as st
 from pages import *
 import utils.cookies as cookies
 
+class AuthenticationLevel:
+    NONE = 0
+    RANGER = 1
+    ADMINISTRATOR = 2
+
 def create_page():
     available_pages = [
-        Page("Login", 0, pages.login.create_page),
-        Page("Dashboard", 1, pages.dashboard.create_page),
-        Page("Historical Data", 1, pages.historical_data.create_page),
-        Page("Download Event", 1, pages.download_event.create_page),
-        Page("Create Account", 2, pages.create_account.create_page),
-        Page("Account Settings", 1, pages.acount_settings.create_page),
-        Page("Application Settings", 2, pages.application_settings.create_page),
+        Page("Login", AuthenticationLevel.NONE, pages.login.create_page),
+        Page("Dashboard", AuthenticationLevel.RANGER, pages.dashboard.create_page),
+        Page("Historical Data", AuthenticationLevel.RANGER, pages.historical_data.create_page),
+        Page("Download Event", AuthenticationLevel.RANGER, pages.download_event.create_page),
+        Page("Create Account", AuthenticationLevel.ADMINISTRATOR, pages.create_account.create_page),
+        Page("Account Settings", AuthenticationLevel.RANGER, pages.acount_settings.create_page),
+        Page("Application Settings", AuthenticationLevel.ADMINISTRATOR, pages.application_settings.create_page),
     ]
 
     # Get the authentication level of the current logged in user.
