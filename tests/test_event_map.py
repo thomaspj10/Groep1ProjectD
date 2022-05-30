@@ -28,6 +28,7 @@ class TestEventMap(unittest.TestCase):
     def test_create_marker(self):
         # Arrange
         event = pd.Series({
+            "event_id": 1,
             "node_id": 1,
             "time": round(time.time()),
             "latitude": -0.759751,
