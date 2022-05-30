@@ -1,11 +1,15 @@
 # Groep1ProjectD
 
-### Docker commands
+### Docker command for running the containers
 
 ```
 docker compose up -d
+```
+
+### Docker command for stopping the containers
+
+```
 docker compose down
-docker restart
 ```
 
 ### installation

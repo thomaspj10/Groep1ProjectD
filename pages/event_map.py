@@ -1,3 +1,4 @@
+from branca.element import Template, MacroElement
 from datetime import datetime
 import pandas as pd
 import streamlit as st
@@ -10,7 +11,7 @@ import folium
 from utils.settings import read_settings 
 
 def create_page():
-    st.header("Folium")
+    st.header("Event map")
 
     # Loads the longitude and latitude for positioning of the event map from the settings 
     settings = read_settings()
@@ -58,16 +59,13 @@ def create_page():
     # The map
     m = folium.Map(
         location=[latitude, longitude],
-        # tiles="Stamen Terrain",
         height="100%",
         width="100%",
     )
     
     folium.TileLayer('stamenterrain').add_to(m)
     
-    ############################################################
-    from branca.element import Template, MacroElement
-
+    ## Creates the legend
     with open("./components/legend.html") as f:
         legend = f.read()
     
@@ -81,49 +79,12 @@ def create_page():
     macro._template = Template(template)
 
     m.add_child(macro)
-    ############################################################
+    ##
 
     for _, event in df.iterrows():
-        color = color_picker(event)
-        if event["sound_type"] == "unknown":
-            icon = folium.Icon(
-                icon="question",
-                prefix="fa fa-question",
-                # color="gray"
-                color=color
-            )
+        create_marker(event).add_to(m)
 
-        elif event["sound_type"] == "vehicle":
-            icon  = folium.Icon(
-                icon="car",
-                prefix="fa fa-car",
-                # color="blue"
-                color=color
-            )
-            
-        elif event["sound_type"] == "animal":
-            icon= folium.Icon(
-                icon="linux",
-                prefix="fa fa-linux",
-                # prefix="fa fa-exclamation"
-                # prefix="fa fa-binoculars"
-                # color="green"
-                color=color
-            )
-            
-        elif event["sound_type"] == "gunshot":
-            icon = folium.Icon(
-                icon="exclamation",
-                prefix="fa fa-exclamation",
-                color=color 
-            )
-            
-        folium.Marker(
-            location=[event["latitude"], event["longitude"]],
-            popup=event["event_id"],
-            icon=icon,
-        ).add_to(m)
-
+    # Auto zoom scaling based on nodes
     list_lat_lon = list(zip(df["latitude"], df["longitude"]))
     m.fit_bounds(list_lat_lon)
 
@@ -133,17 +94,7 @@ def create_page():
     fig = folium.Figure().add_child(m)
     components.html(fig.render(), height=700)
     
-def color_picker(event: pd.Series) -> str:
-    """
-    Color grading
-    
-    darkblue: (now-5min) <= time <= now
-    blue: (now-60min) <= time <= (now-5min)
-    lightblue: (now-6hr) <= time <= (now-60min)
-    cadetblue: (now-24hr) <= (now-6hr)
-    gray: else <= time <= (now-24hr)
-    
-    """
+def get_color(event: pd.Series) -> str:
     import time as ti
     current_unix_time = ti.time()
     
@@ -165,3 +116,75 @@ def color_picker(event: pd.Series) -> str:
         return "lightblue"
     else:
         return "lightgray"
+    
+    
+def create_marker(event: pd.Series) -> folium.Marker:
+    color = get_color(event)
+    if event["sound_type"] == "unknown":
+        icon = folium.Icon(
+            icon="question",
+            prefix="fa fa-question",
+            color=color
+        )
+
+    elif event["sound_type"] == "vehicle":
+        icon  = folium.Icon(
+            icon="car",
+            prefix="fa fa-car",
+            color=color
+        )
+        
+    elif event["sound_type"] == "animal":
+        icon= folium.Icon(
+            icon="linux",
+            prefix="fa fa-linux",
+            color=color
+        )
+        
+    elif event["sound_type"] == "gunshot":
+        icon = folium.Icon(
+            icon="exclamation",
+            prefix="fa fa-exclamation",
+            color=color 
+        )
+
+    event_time = datetime.utcfromtimestamp(float(event["time"])).strftime("%Y/%m/%d %H:%M")
+    popup = folium.Popup(f"""
+        <style>
+            .popup-table td, th {{
+                padding-right:5px;
+            }}
+        </style>
+        <table class="popup-table"> 
+            <tr>
+                <th>Event ID</th>
+                <td>{event['event_id']}</td>
+                <th>Time</th>
+                <td>{event_time}</td>
+            </tr>
+            <tr>
+                <th>Node ID</th>
+                <td>{event['node_id']}</td>
+                <th>Latitude</th>
+                <td>{event['latitude']}</td>
+            </tr>
+            <tr>
+                <th>Probability</th>
+                <td>{event['probability']}%</td>
+                <th>Longitude</th>
+                <td>{event['longitude']}</td>
+            </tr>
+        </table>
+        <br>
+        <audio preload='metadata' controls> 
+            <source src='{event['sound']}' type='audio/mpeg'>
+            Your browser does not support the <code>audio</code> element.
+        </audio>
+    """)
+        
+    return folium.Marker(
+        location=[event["latitude"], event["longitude"]],
+        popup=popup,
+        icon=icon,
+    )
+    

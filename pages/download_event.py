@@ -1,13 +1,12 @@
 import os
 import uuid
+import folium
 import streamlit as st
 import pandas as pd
-import numpy as np
 import utils.database as database
-from utils.logger import Logger
-import leafmap.foliumap as leafmap
 import io
 import datetime
+from pages.event_map import create_marker
 from PIL import Image
 from fpdf import FPDF
 import time as ti
@@ -42,19 +41,18 @@ def create_download():
         st.write(f"An event with the id '{event_id}' does not exist!")
         return
     
+    
     # Create a map.
-    m = leafmap.Map(
-            draw_control=False,
-            measure_control=False,
-            fullscreen_control=False,
-            attribution_control=False,
-            zoom_control=False,
-            search_control=False,
-            location=[df.at[0, "latitude"], df.at[0, "longitude"]],
-            zoom_start=12.5) # 11.5=3km 12.5=1km
-    m.add_basemap("Stamen.Terrain")
-    m.add_circle_markers_from_xy(
-        df, x="longitude", y="latitude", radius=10, color="blue", fill_color="black")
+    m = folium.Map(
+        location=[df.at[0, "latitude"], df.at[0, "longitude"]],
+        tiles="Stamen Terrain",
+        height="100%",
+        width="100%",
+        zoom_start=10
+    )
+    
+    event = df.iloc[0]
+    create_marker(event).add_to(m)
     
     def on_download():
         st.experimental_set_query_params(
