@@ -23,4 +23,4 @@ def send_notification(phone_number, message):
                                 to=phone_number,
                             )
     
-    print("Text message has been send to: %s" % phone_number)
+    print("Text message has been sent to: %s" % phone_number)

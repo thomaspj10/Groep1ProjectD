@@ -28,3 +28,5 @@ RUN pip install -r requirements.txt
 ENV PYTHONUNBUFFERED 1 
 
 COPY . . 
+
+EXPOSE 8501

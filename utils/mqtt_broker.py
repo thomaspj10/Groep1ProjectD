@@ -50,7 +50,7 @@ def subscribe(client: mqtt_client) -> None:
                 
             succes: bool = False
             try:
-                query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
+                query = """ INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) """
                 cursor = db_conn.cursor()
                 cursor.execute(query, query_data)
                 db_conn.commit()
