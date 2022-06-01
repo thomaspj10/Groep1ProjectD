@@ -19,13 +19,13 @@ pip install -r requirements.txt
 conda install -c conda-forge geckodriver
 ```
 
-### Running Frontend
+### Running the streamlit app
 
 ```
 streamlit run main.py
 ```
 
-### Running Middelware
+### Running the middelware
 
 ```
 python middelware.py

@@ -10,14 +10,14 @@ services:
       - .:/usr/src/app/
     command: python middelware.py
     
-  frontend:
+  web:
     depends_on:
       - middelware
-    image: chenqueta_frontend:4.0
+    image: chenqueta_web:4.0
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: chenqueta_frontend
+    container_name: chenqueta_web
     volumes:
       - .:/usr/src/app/
     ports: 
