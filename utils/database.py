@@ -4,7 +4,7 @@ from hashlib import sha256
 # create one connection to the sqlite database
 # a database will be created if it does not yet exists
 # get a connection by importing this file and calling the get_connection function
-def get_connection():
+def get_connection() -> sqlite3.Connection:
     return sqlite3.connect("./db.sqlite")
 
 def setup():

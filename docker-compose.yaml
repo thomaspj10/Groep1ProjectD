@@ -1,18 +1,18 @@
 version: '1.4'
 services:
-  middelware:
-    image: chenqueta_middelware:2.0
+  middleware:
+    image: chenqueta_middleware:2.0
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: chenqueta_middelware
+    container_name: chenqueta_middleware
     volumes:
       - .:/usr/src/app/
-    command: python middelware.py
+    command: python middleware.py
     
   web:
     depends_on:
-      - middelware
+      - middleware
     image: chenqueta_web:4.0
     build:
       context: ./

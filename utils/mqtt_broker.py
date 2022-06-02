@@ -4,9 +4,6 @@ import pandas as pd
 from paho.mqtt import client as mqtt_client
 from utils import notifications, database, settings
 
-
-from uuid import uuid4
-
 __settings = settings.read_settings()
 
 __HOST = __settings["mqtt_broker"]["ipv4"]

@@ -12,7 +12,7 @@
     "topic": "chengeta/notifications",
     "username": "chengeta_user",
     "password": "chengeta2022",
-    "client_id": "groep-1"
+    "client_id": "groep-1-dev"
   },
   "twilio_sms_service": {
     "account_sid": "ACf1a8a3ce82a894972f2ec247038279d6",

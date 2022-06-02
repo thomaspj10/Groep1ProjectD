@@ -71,7 +71,6 @@ def __insert_into_database(event: dict) -> None:
                 """)
     con.commit()
     
-    # print(event)
     
     
 if __name__ == "__main__":
