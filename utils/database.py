@@ -29,7 +29,8 @@ def setup():
         longitude FLOAT,
         sound_type TEXT,
         probability INTEGER,
-        sound TEXT
+        sound TEXT,
+        pdf BLOB
     )""")
 
     password = sha256(("admin1MPlGCnOwSywPTg5BXbZ").encode("utf-8")).hexdigest()

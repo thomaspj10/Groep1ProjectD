@@ -1,11 +1,10 @@
 import datetime
 import json
+import threading
 import pandas as pd
 from paho.mqtt import client as mqtt_client
 from utils import notifications, database, settings
-
-
-from uuid import uuid4
+import utils.pdf as pdf
 
 __settings = settings.read_settings()
 
@@ -53,6 +52,12 @@ def subscribe(client: mqtt_client) -> None:
                 query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
                 cursor = db_conn.cursor()
                 cursor.execute(query, query_data)
+                
+                # Get the event id
+                cursor.execute(f"SELECT last_insert_rowid()")
+                event_id, = cursor.fetchone()
+                payload["event_id"] = event_id
+                
                 db_conn.commit()
                 succes = True
             
@@ -63,11 +68,14 @@ def subscribe(client: mqtt_client) -> None:
             if succes:
                 print("Succeeded to insert data into database.")
                 
+                thread = threading.Thread(target=load_and_add_pdf_to_database, args=(payload, ))
+                thread.start()
+                
                 users = pd.read_sql("SELECT * FROM user WHERE receive_notifications == 1", db_conn)
                 for index, user in users.iterrows():
                     try:
                         time = datetime.datetime.fromtimestamp(int(payload['time']))
-                        msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://www.chengetawildlife.nl:8501/?event={payload['evend_id']}"
+                        msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://www.chengetawildlife.nl:8501/?event={payload['event_id']}"
                         notifications.send_notification(user["telephone"], msg)
                     except Exception as err:
                         print('Handling run-time error:', err)
@@ -80,3 +88,14 @@ def subscribe(client: mqtt_client) -> None:
         
     client.subscribe(__TOPIC)
     client.on_message = on_message
+    
+def load_and_add_pdf_to_database(payload: dict):
+    df = pd.DataFrame(payload, index=[0])
+    pdf_bytes = pdf.get_pdf_bytes(df)
+    
+    conn = database.get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE event SET pdf=? WHERE event_id=?", [pdf_bytes, payload["event_id"]])
+    conn.commit()
+    
+    print("Added the PDF to the database.")
