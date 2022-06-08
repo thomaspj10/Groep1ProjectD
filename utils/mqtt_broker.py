@@ -1,11 +1,9 @@
 import datetime
 import json
+import uuid
 import pandas as pd
 from paho.mqtt import client as mqtt_client
 from utils import notifications, database, settings
-
-
-from uuid import uuid4
 
 __settings = settings.read_settings()
 
@@ -14,7 +12,7 @@ __PORT = __settings["mqtt_broker"]["port"]
 __TOPIC = __settings["mqtt_broker"]["topic"]
 __USERNAME = __settings["mqtt_broker"]["username"]
 __PASSWORD = __settings["mqtt_broker"]["password"]
-__CLIENTID = __settings["mqtt_broker"]["client_id"]
+__CLIENTID = __settings["mqtt_broker"]["client_id"] + f"-uuid.uuid4()"
 
 def connect() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
