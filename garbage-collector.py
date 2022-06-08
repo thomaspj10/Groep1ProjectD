@@ -1,7 +1,7 @@
 import time
 from utils import database, logger
 
-def run():
+def main():
   curr_unix_time = round(time.time())
   unix_1_week = 604800
   
@@ -14,7 +14,7 @@ def run():
     WHERE time BETWEEN {curr_unix_time - unix_1_week} AND {curr_unix_time}
   """)
   
-  count = cur.fetchone()
+  count = cur.fetchall()
   
   cur.execute(f"""
     UPDATE event
@@ -23,3 +23,10 @@ def run():
   """)
   con.commit()
   
+  logger.info(
+    activity="Garbage collector"  ,
+    information=f"Removed {count} old pdf files from database"
+  )
+  
+if __name__ == "__main__":
+  main()

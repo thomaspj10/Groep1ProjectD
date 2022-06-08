@@ -1,13 +1,13 @@
 import time
 import logging
 
-logging.basicConfig(filename=".log", filemode="a", format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S")
+logging.basicConfig(filename="../.log", filemode="a", format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S")
 
 def __execute(logging_method: callable):
     def logger(activity:str, information:str):
         current_unix = time.time()
         logging_method(
-            "{time}\t{activity}\t{info}".format(
+            "{time:<10} {activity:<30} {info:<60}".format(
                 time=current_unix,
                 activity=activity,
                 info=information
