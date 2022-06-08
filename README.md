@@ -1,11 +1,15 @@
 # Groep1ProjectD
 
-### Docker commands
+### Docker command for running the containers
 
 ```
 docker compose up -d
+```
+
+### Docker command for stopping the containers
+
+```
 docker compose down
-docker restart
 ```
 
 ### installation
@@ -15,16 +19,16 @@ pip install -r requirements.txt
 conda install -c conda-forge geckodriver
 ```
 
-### Running Frontend
+### Running the streamlit app
 
 ```
 streamlit run main.py
 ```
 
-### Running Backend
+### Running the middelware
 
 ```
-python backend.py
+python middelware.py
 ```
 
 ### Running the tests

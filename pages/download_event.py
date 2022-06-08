@@ -25,7 +25,7 @@ def create_download():
     if df.size == 0:
         st.write(f"An summary of the event {event_id} does not yet exist.")
         return
-
+    
     def on_download():
         st.experimental_set_query_params(
             event=None

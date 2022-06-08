@@ -5,6 +5,7 @@ import pandas as pd
 from paho.mqtt import client as mqtt_client
 from utils import notifications, database, settings
 import utils.pdf as pdf
+import uuid
 
 __settings = settings.read_settings()
 
@@ -13,7 +14,7 @@ __PORT = __settings["mqtt_broker"]["port"]
 __TOPIC = __settings["mqtt_broker"]["topic"]
 __USERNAME = __settings["mqtt_broker"]["username"]
 __PASSWORD = __settings["mqtt_broker"]["password"]
-__CLIENTID = __settings["mqtt_broker"]["client_id"]
+__CLIENTID = __settings["mqtt_broker"]["client_id"] + f"-uuid.uuid4()"
 
 def connect() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
@@ -49,7 +50,7 @@ def subscribe(client: mqtt_client) -> None:
                 
             succes: bool = False
             try:
-                query = ''' INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) '''
+                query = """ INSERT INTO event (node_id, time, latitude, longitude, sound_type, probability, sound) VALUES (?,?,?,?,?,?,?) """
                 cursor = db_conn.cursor()
                 cursor.execute(query, query_data)
                 

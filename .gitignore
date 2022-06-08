@@ -1,6 +1,7 @@
+.idea
+.vs
+.vscode
+.log
+db.sqlite
 *.pyc 
 **/geckodriver.log
-**/temp_map_img.png
-*.idea
-db.sqlite
-.log
