@@ -1,4 +1,4 @@
-version: '1.4'
+version: '1.5'
 services:
   middleware:
     image: chenqueta_middleware:2.0
@@ -23,3 +23,15 @@ services:
     ports: 
       - 80:80
     command: streamlit run main.py --server.port 80
+
+  garbage-collector:
+    depends_on:
+      - middleware
+    image: chenqueta_garbage-collector:1.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: chenqueta_garbage-collector
+    volumes:
+      - .:/usr/src/app/
+    command: python garbage-collector.py
