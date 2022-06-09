@@ -64,10 +64,7 @@ def create_page():
     if (sound_type_input != "All"):
         df = df[df['sound_type'] == sound_type_input.lower()]
 
-    if (start_date_input == end_date_input):
-        df = df[(df["time"] >= mktime(start_date_input.timetuple())) & (df["time"] <= mktime((end_date_input + datetime.timedelta(days = 1)).timetuple()))]
-    else:
-        df = df[(df['time'] >= mktime(start_date_input.timetuple())) & (df['time'] <= mktime(end_date_input.timetuple()))]
+    df = df[(df["time"] >= mktime(start_date_input.timetuple())) & (df["time"] <= mktime((end_date_input + datetime.timedelta(days = 1)).timetuple()))]
 
     if (node_id_input != -1):
         df = df[df['node_id'] == node_id_input]
