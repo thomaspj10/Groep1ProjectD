@@ -14,14 +14,15 @@ __PORT = __settings["mqtt_broker"]["port"]
 __TOPIC = __settings["mqtt_broker"]["topic"]
 __USERNAME = __settings["mqtt_broker"]["username"]
 __PASSWORD = __settings["mqtt_broker"]["password"]
-__CLIENTID = __settings["mqtt_broker"]["client_id"] + f"-uuid.uuid4()"
+__CLIENTID = __settings["mqtt_broker"]["client_id"] + f"-{uuid.uuid4()}"
 
 def connect() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
+        current_time = datetime.datetime.now()
         if rc == 0:
-            print("Connected to MQTT Broker.")
+            print(f"[{current_time}] Connected to MQTT Broker.")
         else:
-            print("Failed to connect, return code %d\n" % rc)
+            print(f"[{current_time}] Failed to connect, return code %d\n" % rc)
 
     client = mqtt_client.Client(__CLIENTID)
     client.username_pw_set(__USERNAME, __PASSWORD)
@@ -32,6 +33,7 @@ def connect() -> mqtt_client:
 
 def subscribe(client: mqtt_client) -> None:
     def on_message(client, userdata, msg):
+        current_time = datetime.datetime.now()
         payload_jsonstring = msg.payload.decode()
         payload = json.loads(payload_jsonstring)
         
@@ -63,11 +65,11 @@ def subscribe(client: mqtt_client) -> None:
                 succes = True
             
             except TypeError as err:
-                print('Handling run-time error:', err)
+                print(f"[{current_time}] Handling run-time error:", err)
                 succes = False
                 
             if succes:
-                print("Succeeded to insert data into database.")
+                print(f"[{current_time}] Succeeded to insert data into database.")
                 
                 thread = threading.Thread(target=load_and_add_pdf_to_database, args=(payload, ))
                 thread.start()
@@ -79,13 +81,13 @@ def subscribe(client: mqtt_client) -> None:
                         msg = f"\n\nChengeta Wildlife\n\nAn event occured at node {payload['nodeId']}.\n{time}\n\nLatitude: {payload['latitude']}\nLongitude: {payload['longitude']}\n\nProbability: {payload['probability']}%\nType: {payload['sound_type']}\n\nhttp://www.chengetawildlife.nl:8501/?event={payload['event_id']}"
                         notifications.send_notification(user["telephone"], msg)
                     except Exception as err:
-                        print('Handling run-time error:', err)
+                        print(f"[{current_time}] Handling run-time error:", err)
             
             else:
-                print("Failed to insert data into database.")
+                print(f"[{current_time}] Failed to insert data into database.")
             
         except Exception as err:
-            print('Handling run-time error:', err)
+            print(f"[{current_time}] Handling run-time error:", err)
         
     client.subscribe(__TOPIC)
     client.on_message = on_message
@@ -99,4 +101,5 @@ def load_and_add_pdf_to_database(payload: dict):
     cursor.execute("UPDATE event SET pdf=? WHERE event_id=?", [pdf_bytes, payload["event_id"]])
     conn.commit()
     
-    print("Added the PDF to the database.")
+    current_time = datetime.datetime.now()
+    print(f"[{current_time}] [+] Added the PDF to the database.")
