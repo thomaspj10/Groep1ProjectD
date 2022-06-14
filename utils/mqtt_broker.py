@@ -35,6 +35,9 @@ def subscribe(client: mqtt_client) -> None:
         payload_jsonstring = msg.payload.decode()
         payload = json.loads(payload_jsonstring)
         
+        payload["latitude"] = round(payload["latitude"], 6)
+        payload["longitude"] = round(payload["longitude"], 6)
+        
         try: 
             query_data = [
                 payload["nodeId"], payload["time"],
