@@ -1,6 +1,13 @@
 import time
 import logging
 
+logging.basicConfig(
+    filename=".log", 
+    filemode="a", 
+    format="%(asctime)s - %(message)s", 
+    datefmt="%d-%b-%y %H:%M:%S"
+)
+
 def __execute(logging_method: callable):
     def logger(activity:str, information:str):
         current_unix = time.time()

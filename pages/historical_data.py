@@ -17,7 +17,7 @@ def create_page():
 
     # Filtering/sorting options for Sound type, Probability, Node ID and Date
     with st.expander("Filtering and sorting options"):
-        with st.form("filter_form", clear_on_submit=True):
+        with st.form("filter_form"):
             cols = st.columns(2)
             with cols[0]:
                 # Sound type filter

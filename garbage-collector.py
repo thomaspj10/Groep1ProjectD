@@ -30,10 +30,10 @@ def run():
     info = f"Handling run-time error: {err}"
 
   print(f"[-] {info}")
-  logger.info(
-    activity="Garbage collector",
-    information=info
-  )
+  # logger.info(
+  #   activity="Garbage collector",
+  #   information=info
+  # )
   
 def main():
   while True:

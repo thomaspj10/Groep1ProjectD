@@ -21,25 +21,31 @@ def create_page():
     # Expander to hide the filter options if the user does not want to use them
     with st.expander("Filter options"):
 
-        # Create the select box to pick the sound type
-        option_sound_type = st.selectbox("Select sound type", ["All", "Vehicle", "Gunshot", "Animal", "Unknown"])
+        with st.form("filter_form"):
+            # Create the select box to pick the sound type
+            option_sound_type = st.selectbox("Select sound type", ["All", "Vehicle", "Gunshot", "Animal", "Unknown"])
 
-        # Create the slider to pick a value for probability (between 0 and 100 with steps of 1)
-        probability_slider = st.slider(label = 'Probability', value = 0, min_value = 0, max_value = 100, step = 1)
+            # Create the slider to pick a value for probability (between 0 and 100 with steps of 1)
+            probability_slider = st.slider(label = 'Probability', value = 0, min_value = 0, max_value = 100, step = 1)
 
-        date_cols = st.columns(2)
-        
-        with date_cols[0]:
-            # Create the date
-            start = st.date_input('Start', value = datetime.today().date())
+            date_cols = st.columns(2)
+            
+            with date_cols[0]:
+                # Create the date
+                start = st.date_input('Start', value = datetime.today().date())
 
-        with date_cols[1]:
-            # add a year to start date
-            end = st.date_input('End', value = pd.to_datetime(start + pd.Timedelta(days=365)))
+            with date_cols[1]:
+                # add a year to start date
+                end = st.date_input('End', value = pd.to_datetime(start + pd.Timedelta(days=365)))
 
-        # convert date to unix timestamp
-        start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
-        end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
+            # convert date to unix timestamp
+            start_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(start), '%Y-%m-%d')))
+            end_to_unix_timestamp = int(datetime.timestamp(datetime.strptime(str(end), '%Y-%m-%d')))
+            
+            submitted = st.form_submit_button("Apply filters/sorting", args=["style='color:red'"])
+
+            if submitted:
+                st.success("Filters and sorting applied.")
     
     # Create a database connection.
     conn = database.get_connection()
@@ -86,7 +92,8 @@ def create_page():
 
     # Auto zoom scaling based on nodes
     list_lat_lon = list(zip(df["latitude"], df["longitude"]))
-    m.fit_bounds(list_lat_lon)
+    if len(list_lat_lon) != 0:
+        m.fit_bounds(list_lat_lon)
 
     # Creates a figure from the map,
     # then renders the html representation of the figure
@@ -176,7 +183,7 @@ def create_marker(event: pd.Series) -> folium.Marker:
             </tr>
         </table>
         <br>
-        <audio preload='metadata' controls> 
+        <audio preload='none' controls> 
             <source src='{event['sound']}' type='audio/mpeg'>
             Your browser does not support the <code>audio</code> element.
         </audio>

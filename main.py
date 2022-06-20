@@ -1,9 +1,6 @@
 import streamlit as st
 import pages.download_event
 import utils.cookies as cookies
-import logging
-
-logging.basicConfig(filename="./.log", filemode="a", format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S")
 
 st.set_page_config(
     page_title="Chengeta Dashboard",
