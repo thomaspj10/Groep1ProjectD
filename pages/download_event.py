@@ -3,7 +3,6 @@ import streamlit.components.v1 as components
 import pandas as pd
 import utils.database as database
 import base64
-import json
 
 def download_button(object_to_download, download_filename):
     try:
@@ -45,7 +44,7 @@ def create_download(event_id = None):
     df = pd.read_sql(f"SELECT * FROM event WHERE event_id={event_id} AND pdf IS NOT NULL", conn)
     
     if df.size == 0:
-        st.write(f"An summary of the event {event_id} does not yet exist.")
+        st.write(f"A summary of the event {event_id} does not yet exist.")
         return
 
     pdf_bytes = df.iloc[0]["pdf"]
