@@ -25,10 +25,10 @@ conda install -c conda-forge geckodriver
 streamlit run main.py
 ```
 
-### Running the middelware
+### Running the middleware
 
 ```
-python middelware.py
+python middleware.py
 ```
 
 ### Running the tests
