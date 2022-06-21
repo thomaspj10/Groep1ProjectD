@@ -12,10 +12,10 @@ def run():
     cur.execute(f"""
       SELECT COUNT(*)
       FROM event
-      WHERE time BETWEEN {curr_unix_time - unix_1_week} AND {curr_unix_time}
+      WHERE pdf IS NOT NULL AND time BETWEEN {curr_unix_time - unix_1_week} AND {curr_unix_time}
     """)
     
-    count = cur.fetchall()
+    count = cur.fetchall()[0][0]
     
     cur.execute(f"""
       UPDATE event
@@ -29,11 +29,11 @@ def run():
   except Exception as err:
     info = f"Handling run-time error: {err}"
 
-  print(info)
-  logger.info(
-    activity="Garbage collector",
-    information=info
-  )
+  print(f"[-] {info}")
+  # logger.info(
+  #   activity="Garbage collector",
+  #   information=info
+  # )
   
 def main():
   while True:
@@ -41,5 +41,4 @@ def main():
     time.sleep(3600)
   
 if __name__ == "__main__":
-  
   main()
