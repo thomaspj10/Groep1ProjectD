@@ -13,6 +13,7 @@ def create_page():
         Page("Login", AuthenticationLevel.NONE, pages.login.create_page),
         Page("Dashboard", AuthenticationLevel.RANGER, pages.dashboard.create_page),
         Page("Historical Data", AuthenticationLevel.RANGER, pages.historical_data.create_page),
+        Page("Heatmap", AuthenticationLevel.ADMINISTRATOR, pages.heatmap.create_page),
         Page("Download Event", AuthenticationLevel.RANGER, pages.download_event.create_page),
         Page("Create Account", AuthenticationLevel.ADMINISTRATOR, pages.create_account.create_page),
         Page("Account Settings", AuthenticationLevel.RANGER, pages.acount_settings.create_page),
