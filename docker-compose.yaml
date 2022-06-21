@@ -1,11 +1,11 @@
 version: '1.5'
 services:
   middleware:
-    image: chenqueta_middleware:2.0
+    image: chengeta_middleware:2.0
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: chenqueta_middleware
+    container_name: chengeta_middleware
     volumes:
       - .:/usr/src/app/
     command: python middleware.py
@@ -13,11 +13,11 @@ services:
   web:
     depends_on:
       - middleware
-    image: chenqueta_web:4.0
+    image: chengeta_web:4.0
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: chenqueta_web
+    container_name: chengeta_web
     volumes:
       - .:/usr/src/app/
     ports: 
@@ -27,11 +27,11 @@ services:
   garbage-collector:
     depends_on:
       - middleware
-    image: chenqueta_garbage-collector:1.0
+    image: chengeta_garbage-collector:1.0
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: chenqueta_garbage-collector
+    container_name: chengeta_garbage-collector
     volumes:
       - .:/usr/src/app/
     command: python garbage-collector.py
